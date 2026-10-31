@@ -1,0 +1,253 @@
+body {
+    min-height: 100vh;
+    background: #090b08;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Courier New", monospace;
+}
+
+.monitor {
+    width: min(900px, 92vw);
+    padding: 22px;
+    background: #39382d;
+    border: 2px solid #514f40;
+    border-radius: 28px;
+    box-shadow: 0 20px 60px #000;
+}
+
+.screen {
+    min-height: 520px;
+    background: #171e0e;
+    border: 3px solid #25291c;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow:
+        inset 0 0 55px #050904,
+        0 0 12px #000;
+}
+
+.screen-content {
+    min-height: 520px;
+    padding: 55px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #a3ff65;
+    text-shadow: 0 0 6px #80ff38, 0 0 18px #4dff20;
+}
+
+.system-text,
+.intro,
+.warning {
+    font-size: 12px;
+    letter-spacing: 3px;
+}
+
+.system-text {
+    margin-bottom: 55px;
+}
+
+h1 {
+    font-size: clamp(42px, 8vw, 78px);
+    letter-spacing: 5px;
+}
+
+h2 {
+    font-size: clamp(18px, 4vw, 30px);
+    margin-top: 15px;
+}
+
+.intro {
+    margin-top: 45px;
+}
+
+#start-button {
+    margin-top: 35px;
+    padding: 13px 35px;
+    color: #a3ff65;
+    background: transparent;
+    border: 1px solid #a3ff65;
+    font: inherit;
+    letter-spacing: 3px;
+    cursor: pointer;
+    text-shadow: inherit;
+}
+
+#start-button:hover {
+    background: #a3ff65;
+    color: #171e0e;
+    text-shadow: none;
+}
+
+.warning {
+    margin-top: 45px;
+    font-size: 10px;
+}
+
+
+
+.hidden {
+    display: none !important;
+}
+
+.story-screen {
+    justify-content: flex-start;
+    align-items: flex-start;
+    text-align: left;
+    padding: 45px;
+}
+
+#story-output {
+    width: 100%;
+    margin-top: 35px;
+    font-size: 16px;
+    line-height: 1.9;
+    letter-spacing: 1px;
+    white-space: pre-wrap;
+}
+
+.story-status {
+    margin-top: auto;
+    padding-top: 30px;
+    font-size: 11px;
+    letter-spacing: 2px;
+}
+
+
+#story-output::after {
+    content: "▋";
+    display: inline-block;
+    animation: blink 0.8s steps(2, start) infinite;
+}
+
+@keyframes blink {
+    to {
+        visibility: hidden;
+    }
+}
+
+
+.story-status {
+    animation: status-blink 1s steps(2, start) infinite;
+}
+
+@keyframes status-blink {
+    to {
+        opacity: 0.25;
+    }
+}
+
+/* JUMPSCARE OVERLAY */
+.jumpscare-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    background: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.jumpscare-overlay video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* JUMPSCARE CONTROL */
+
+#jumpscare-toggle {
+    margin-top: 20px;
+    padding: 8px 12px;
+    background: transparent;
+    color: #a3ff65;
+    border: 1px solid #a3ff65;
+    font-family: inherit;
+    font-size: 10px;
+    letter-spacing: 1px;
+    cursor: pointer;
+}
+
+#jumpscare-toggle:hover {
+    background: #a3ff65;
+    color: #171e0e;
+}
+
+
+/* FIXED MONITOR BOUNDARIES */
+
+.monitor {
+    width: min(96vw, 1250px);
+    height: min(92vh, 800px);
+    overflow: hidden;
+}
+
+.screen {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+/* SCREEN CONTENT */
+
+.screen-content {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+/* STORY SCREEN */
+
+.story-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    overflow: hidden;
+    min-height: 0;
+}
+
+#story-output {
+    width: 100%;
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+    box-sizing: border-box;
+}
+
+/* JUMPSCARE OVERLAY */
+
+.jumpscare-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 100;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #000;
+    box-sizing: border-box;
+}
+
+.jumpscare-overlay.hidden {
+    display: none !important;
+}
+
+.jumpscare-overlay video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    max-width: 100%;
+    max-height: 100%;
+}

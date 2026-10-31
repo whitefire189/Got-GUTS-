@@ -1,0 +1,64 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GOT GUTS? ...WE'LL SEE.</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <main class="monitor">
+        <div class="screen">
+
+            <!-- WELCOME SCREEN -->
+            <div class="screen-content" id="welcome-screen">
+
+                <p class="system-text">SYSTEM ONLINE // 1987</p>
+
+                <h1>GOT GUTS?</h1>
+                <h2>...WE'LL SEE.</h2>
+
+                <p class="intro">ONE STORY. ONE TEST. ONE CHANCE.</p>
+
+                <button id="start-button">[ ENTER ]</button>
+
+                <p class="warning">
+                    DO NOT INTERRUPT THE TRANSMISSION.
+                </p>
+
+            </div>
+
+
+            <!-- STORY SCREEN -->
+            <div class="screen-content story-screen hidden" id="story-screen">
+
+                <p class="system-text">INCOMING TRANSMISSION // 001</p>
+
+                <div id="story-output"></div>
+
+                <p class="story-status">AWAITING DATA...</p>
+
+                <button id="jumpscare-toggle" type="button">
+                    JUMPSCARES: ON
+                </button>
+
+            </div>
+
+
+            <!-- JUMPSCARE OVERLAY -->
+            <div class="jumpscare-overlay hidden" id="jumpscare-overlay">
+
+                <video id="jumpscare-video" playsinline></video>
+
+            </div>
+
+        </div>
+    </main>
+
+    <script src="js/script.js"></script>
+
+</body>
+</html>
+

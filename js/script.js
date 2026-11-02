@@ -1,4 +1,3 @@
-
 /* =========================================================
    GOT GUTS? ...WE'LL SEE.
    APPLICATION ENGINE // BUILD 03
@@ -15,6 +14,8 @@ const elements = {
     quiz: document.getElementById("quiz-screen"),
     results: document.getElementById("results-screen"),
     certificate: document.getElementById("certificate-screen"),
+    warning: document.getElementById("warning-screen"),
+    credits: document.getElementById("credits-screen"),
 
     // Welcome
     startButton: document.getElementById("start-button"),
@@ -53,6 +54,7 @@ const elements = {
     certificateRecipient: document.getElementById("certificate-recipient-name"),
     certificateScore: document.getElementById("certificate-score"),
     certificateDate: document.getElementById("certificate-date"),
+    downloadButton: document.getElementById("download-certificate-button"),
     printButton: document.getElementById("print-certificate-button"),
     restartButton: document.getElementById("restart-button"),
 
@@ -92,7 +94,7 @@ const state = {
 /* 03. STORY DATA
    --------------------------------------------------------- */
 
-// Original story passages preserved from your supplied script.
+// Original story passages preserved.
 // The repeated passage is intentionally retained.
 
 const storyPassages = [
@@ -100,52 +102,42 @@ const storyPassages = [
         text: "STORY TRANSMISSION INCOMING...",
         pause: 1200
     },
-
     {
         text: "\n\nConnection established.",
         pause: 1500
     },
-
     {
         text: "STORY: FIRST WORDS...",
         pause: 1500
     },
-
     {
         text: "\n\nAny day now, she'll say her first words.",
         pause: 1800
     },
-
     {
         text: "\n\nAny day now, she'll say her first words.",
         pause: 1800
     },
-
     {
         text: "I don't mind it though. I still believe I'll win. When we first brought her home, she would scream and cry and nothing my wife would say could calm her down, but I knew just how to hold her to help her fall asleep.",
         pause: 1500
     },
-
     {
         text: "\n\nOur daughter was a daddy's girl - my wife needed all the handicaps she could get.",
         pause: 1200
     },
-
     {
         text: "I sit our daughter in her chair and my wife and I begin babbling like chickens - 'Mama!' 'Daddy!' 'Say Mama!' 'Who's daddy's baby?'",
         pause: 2500
     },
-
     {
         text: "I pull the gag from our little girl's mouth. P-please... what do you want from me? Please let me go...",
         pause: 2500
     },
-
     {
         text: `My wife's smile falls from her face. With a heavy heart, I put the gag back in as the girl starts to scream. I take her back to the room, locking her in and shutting the lights out. When I return, I find my wife crying. "It's ok, honey," I tell her, "The next one will be better. I promise."`,
         pause: 2500
     },
-
     {
         text: "\n\nEND OF TEST TRANSMISSION.",
         pause: 0
@@ -162,11 +154,8 @@ const totalStoryCharacters = storyPassages.reduce(
    --------------------------------------------------------- */
 
 const jumpscareFiles = [
-    "anomaly.mp4",
     "doll.mp4",
-    "infected.mp4",
     "jeff.mp4",
-    "man.mp4",
     "scarecrow.mp4",
     "scp.mp4",
     "spider.mp4"
@@ -180,30 +169,23 @@ const JUMPSCARE_DURATION = 3000;
 /* 05. QUIZ DATABASE
    --------------------------------------------------------- */
 
-// Answers are checked without case sensitivity.
-// Spaces and punctuation are normalized.
-
 const quizQuestions = [
     {
         prompt: "The narrator described their daughter as a daddy's _____.",
         answers: ["girl"]
     },
-
     {
         prompt: "What did the narrator pull from the little girl's mouth?",
         answers: ["gag"]
     },
-
     {
         prompt: "Where did the narrator take the girl after she screamed?",
         answers: ["room", "her room", "the room"]
     },
-
     {
         prompt: "What was the narrator's wife doing when he returned?",
         answers: ["crying"]
     },
-
     {
         prompt: "Complete the narrator's promise: 'The next one will be _____. I promise.'",
         answers: ["better"]
@@ -215,8 +197,10 @@ const quizQuestions = [
    --------------------------------------------------------- */
 
 const screens = {
+    warning: elements.warning,
     boot: elements.boot,
     story: elements.story,
+    credits: elements.credits,
     quiz: elements.quiz,
     results: elements.results,
     certificate: elements.certificate
@@ -231,7 +215,9 @@ function showScreen(screenName) {
     }
 
     Object.entries(screens).forEach(([name, screen]) => {
-        screen.classList.toggle("hidden", name !== screenName);
+        if (screen) {
+            screen.classList.toggle("hidden", name !== screenName);
+        }
     });
 
     state.currentScreen = screenName;
@@ -245,7 +231,6 @@ function notify(message, duration = 2600) {
     clearTimeout(state.notificationTimer);
 
     elements.notificationMessage.textContent = message;
-
     elements.notification.classList.remove("hidden");
 
     state.notificationTimer = setTimeout(() => {
@@ -269,7 +254,6 @@ function updateStoryProgress() {
     );
 
     elements.storyProgressText.textContent = `${percentage}%`;
-
     elements.storyProgressFill.style.width = `${percentage}%`;
 
     elements.storyProgress.setAttribute(
@@ -295,7 +279,6 @@ function typeNextCharacter() {
     }
 
     if (state.currentCharacter < passage.text.length) {
-
         elements.storyOutput.textContent +=
             passage.text.charAt(state.currentCharacter);
 
@@ -314,7 +297,6 @@ function typeNextCharacter() {
         return;
     }
 
-    // Current passage finished.
     const pauseDuration = passage.pause;
 
     state.currentPassage++;
@@ -334,6 +316,9 @@ function typeNextCharacter() {
 
 
 function beginStory() {
+    clearTimeout(state.typingTimer);
+    clearTimeout(state.passageTimer);
+
     state.currentPassage = 0;
     state.currentCharacter = 0;
 
@@ -355,7 +340,6 @@ function beginStory() {
     showScreen("story");
 
     typeNextCharacter();
-
     scheduleJumpscare();
 }
 
@@ -369,7 +353,6 @@ function pauseStory() {
     }
 
     if (!state.isPaused) {
-
         state.isPaused = true;
 
         clearTimeout(state.typingTimer);
@@ -379,23 +362,19 @@ function pauseStory() {
         stopJumpscare();
 
         elements.pauseButton.textContent = "RESUME";
-
         elements.storyStatus.textContent =
             "■ TRANSMISSION PAUSED";
 
         notify("TRANSMISSION PAUSED");
 
     } else {
-
         state.isPaused = false;
 
         elements.pauseButton.textContent = "PAUSE";
-
         elements.storyStatus.textContent =
             "■ RECEIVING DATA...";
 
         typeNextCharacter();
-
         scheduleJumpscare();
 
         notify("TRANSMISSION RESUMED");
@@ -463,7 +442,7 @@ function completeStory() {
     notify("TRANSMISSION COMPLETE // EVALUATION UNLOCKED");
 
     setTimeout(() => {
-        beginQuiz();
+        beginCredits();
     }, 1800);
 }
 
@@ -534,7 +513,6 @@ function playJumpscare() {
     const playback = elements.jumpscareVideo.play();
 
     playback.then(() => {
-
         if (!state.isJumpscarePlaying) {
             return;
         }
@@ -548,7 +526,6 @@ function playJumpscare() {
         }, JUMPSCARE_DURATION);
 
     }).catch(error => {
-
         console.error("Jumpscare playback failed:", error);
 
         stopJumpscare();
@@ -567,9 +544,7 @@ function stopJumpscare() {
     clearTimeout(state.jumpscareDurationTimer);
 
     elements.jumpscareVideo.pause();
-
     elements.jumpscareVideo.removeAttribute("src");
-
     elements.jumpscareVideo.load();
 
     elements.jumpscareOverlay.classList.add("hidden");
@@ -587,7 +562,6 @@ function stopJumpscare() {
    --------------------------------------------------------- */
 
 elements.jumpscareVideo.addEventListener("ended", () => {
-
     if (!state.isJumpscarePlaying) {
         return;
     }
@@ -601,7 +575,6 @@ elements.jumpscareVideo.addEventListener("ended", () => {
 
 
 elements.jumpscareVideo.addEventListener("error", () => {
-
     if (!state.isJumpscarePlaying) {
         return;
     }
@@ -633,15 +606,12 @@ function toggleJumpscares() {
     );
 
     if (!state.jumpscaresEnabled) {
-
         clearTimeout(state.jumpscareTimer);
-
         stopJumpscare();
 
         notify("JUMPSCARES DISABLED");
 
     } else {
-
         scheduleJumpscare();
 
         notify("JUMPSCARES ENABLED");
@@ -656,7 +626,6 @@ function renderQuiz() {
     elements.quizQuestions.replaceChildren();
 
     quizQuestions.forEach((question, index) => {
-
         const card = document.createElement("div");
         card.className = "question-card";
 
@@ -726,10 +695,10 @@ function updateQuizProgress() {
 }
 
 
-/* 20. QUIZ SCREEN
+/* 20. ACTUAL QUIZ SCREEN
    --------------------------------------------------------- */
 
-function beginQuiz() {
+function beginActualQuiz() {
     renderQuiz();
 
     elements.quizFeedback.textContent =
@@ -768,14 +737,13 @@ function evaluateQuiz(event) {
     let score = 0;
 
     quizQuestions.forEach((question, index) => {
-
         const submittedAnswer = normalizeAnswer(
             inputs[index].value
         );
 
-        const isCorrect = question.answers.some(answer => {
-            return submittedAnswer === normalizeAnswer(answer);
-        });
+        const isCorrect = question.answers.some(answer =>
+            submittedAnswer === normalizeAnswer(answer)
+        );
 
         if (isCorrect) {
             score++;
@@ -800,24 +768,22 @@ function evaluateQuiz(event) {
 function showResults() {
     const total = quizQuestions.length;
 
-    elements.scoreValue.textContent = `${state.score}/${total}`;
+    elements.scoreValue.textContent =
+        `${state.score}/${total}`;
 
     const percentage = Math.round(
         (state.score / total) * 100
     );
 
     if (state.score === total) {
-
         elements.resultMessage.textContent =
             "PERFECT RECALL. EVERY DETAIL ACCOUNTED FOR.";
 
     } else if (state.score >= 3) {
-
         elements.resultMessage.textContent =
             "TRANSMISSION RETAINED. SOME DETAILS WERE LOST.";
 
     } else {
-
         elements.resultMessage.textContent =
             "TRANSMISSION RECEIVED. MEMORY INTEGRITY: PARTIAL.";
     }
@@ -836,10 +802,10 @@ function openCertificate() {
     elements.participantName.value = "";
 
     elements.certificateForm.classList.remove("hidden");
-
     elements.generatedCertificate.classList.add("hidden");
 
     elements.printButton.disabled = true;
+    elements.downloadButton.disabled = true;
 
     showScreen("certificate");
 }
@@ -864,9 +830,7 @@ function generateCertificate(event) {
 
     state.participant = name;
 
-    const currentDate = new Date();
-
-    const formattedDate = currentDate.toLocaleDateString(
+    const formattedDate = new Date().toLocaleDateString(
         "en-IN",
         {
             day: "2-digit",
@@ -883,20 +847,231 @@ function generateCertificate(event) {
     elements.certificateDate.textContent = formattedDate;
 
     elements.certificateForm.classList.add("hidden");
-
     elements.generatedCertificate.classList.remove("hidden");
 
     elements.printButton.disabled = false;
+    elements.downloadButton.disabled = false;
 
     notify("CERTIFICATE GENERATED SUCCESSFULLY.");
 }
 
 
-/* 26. PRINT CERTIFICATE
+/* 26. DOWNLOAD CERTIFICATE AS PNG
+   --------------------------------------------------------- */
+
+function downloadCertificate() {
+    if (
+        elements.generatedCertificate.classList.contains("hidden") ||
+        !state.participant
+    ) {
+        notify("GENERATE YOUR CERTIFICATE FIRST.");
+        return;
+    }
+
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+
+    canvas.width = 1600;
+    canvas.height = 1100;
+
+    const width = canvas.width;
+    const height = canvas.height;
+
+    // Background
+    const background = ctx.createLinearGradient(
+        0, 0, width, height
+    );
+
+    background.addColorStop(0, "#151c11");
+    background.addColorStop(0.5, "#0d130b");
+    background.addColorStop(1, "#1b1b12");
+
+    ctx.fillStyle = background;
+    ctx.fillRect(0, 0, width, height);
+
+    // Outer frame
+    ctx.strokeStyle = "#a28d5c";
+    ctx.lineWidth = 3;
+
+    ctx.strokeRect(
+        45, 45,
+        width - 90,
+        height - 90
+    );
+
+    // Inner frame
+    ctx.strokeStyle = "rgba(162, 141, 92, 0.45)";
+    ctx.lineWidth = 1;
+
+    ctx.strokeRect(
+        62, 62,
+        width - 124,
+        height - 124
+    );
+
+    // Decorative corners
+    const corners = [
+        [85, 85],
+        [width - 85, 85],
+        [85, height - 85],
+        [width - 85, height - 85]
+    ];
+
+    ctx.strokeStyle = "#a28d5c";
+    ctx.lineWidth = 3;
+
+    corners.forEach(([x, y]) => {
+        ctx.beginPath();
+        ctx.arc(x, y, 17, 0, Math.PI * 2);
+        ctx.stroke();
+    });
+
+    // Header
+    ctx.textAlign = "center";
+    ctx.textBaseline = "alphabetic";
+
+    ctx.fillStyle = "#a28d5c";
+    ctx.font = "bold 22px monospace";
+
+    ctx.fillText(
+        "G.G. TERMINAL SYSTEMS PRESENTS",
+        width / 2,
+        190
+    );
+
+    // Main heading
+    ctx.fillStyle = "#d1ff9b";
+    ctx.font = "normal 62px Georgia";
+
+    ctx.fillText(
+        "UNFAZED BY",
+        width / 2,
+        330
+    );
+
+    ctx.fillStyle = "#a28d5c";
+    ctx.font = "italic 57px Georgia";
+
+    ctx.fillText(
+        "HALLOWEEN SPOOK...",
+        width / 2,
+        410
+    );
+
+    // Divider
+    ctx.strokeStyle = "#a28d5c";
+    ctx.lineWidth = 2;
+
+    ctx.beginPath();
+    ctx.moveTo(570, 470);
+    ctx.lineTo(1030, 470);
+    ctx.stroke();
+
+    // Certificate recipient label
+    ctx.fillStyle = "#77806a";
+    ctx.font = "20px monospace";
+
+    ctx.fillText(
+        "THIS CERTIFICATE IS AWARDED TO",
+        width / 2,
+        555
+    );
+
+    // Participant name
+    ctx.fillStyle = "#d1ff9b";
+
+    let nameSize = 64;
+
+    do {
+        ctx.font = `italic ${nameSize}px Georgia`;
+        nameSize -= 2;
+    } while (
+        ctx.measureText(state.participant).width > 1250 &&
+        nameSize > 30
+    );
+
+    ctx.fillText(
+        state.participant,
+        width / 2,
+        680
+    );
+
+    // Achievement text
+    ctx.fillStyle = "#9aaa83";
+    ctx.font = "20px monospace";
+
+    ctx.fillText(
+        "FOR COMPLETING THE TRANSMISSION",
+        width / 2,
+        785
+    );
+
+    ctx.fillText(
+        "AND SURVIVING THE EXPERIENCE.",
+        width / 2,
+        820
+    );
+
+    // Score
+    ctx.fillStyle = "#77806a";
+    ctx.font = "19px monospace";
+
+    ctx.fillText(
+        `SCORE: ${state.score}/${quizQuestions.length}`,
+        570,
+        925
+    );
+
+    // Date
+    ctx.fillText(
+        `RECORD: ${elements.certificateDate.textContent}`,
+        1030,
+        925
+    );
+
+    // Verification seal
+    ctx.fillStyle = "#a28d5c";
+    ctx.font = "bold 21px monospace";
+
+    ctx.fillText(
+        "G.G. // VERIFIED",
+        width / 2,
+        1000
+    );
+
+    // Export PNG
+    canvas.toBlob(blob => {
+        if (!blob) {
+            notify("PNG GENERATION FAILED.");
+            return;
+        }
+
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+
+        link.href = url;
+        link.download = "Unfazed-by-Halloween.png";
+
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+
+        setTimeout(() => {
+            URL.revokeObjectURL(url);
+        }, 1000);
+
+        notify("CERTIFICATE DOWNLOADED.");
+    }, "image/png");
+}
+
+
+/* 27. PRINT CERTIFICATE
    --------------------------------------------------------- */
 
 function printCertificate() {
-    if (elements.generatedCertificate.classList.contains("hidden")) {
+    if (
+        elements.generatedCertificate.classList.contains("hidden")
+    ) {
         return;
     }
 
@@ -904,7 +1079,7 @@ function printCertificate() {
 }
 
 
-/* 27. RESTART EXPERIENCE
+/* 28. RESTART EXPERIENCE
    --------------------------------------------------------- */
 
 function restartExperience() {
@@ -913,6 +1088,9 @@ function restartExperience() {
     clearTimeout(state.jumpscareTimer);
     clearTimeout(state.jumpscareDurationTimer);
     clearTimeout(state.notificationTimer);
+
+    clearTimeout(creditsTypingTimer);
+    clearInterval(creditsCountdownTimer);
 
     stopJumpscare();
 
@@ -944,7 +1122,6 @@ function restartExperience() {
     );
 
     elements.quizForm.reset();
-
     elements.quizQuestions.replaceChildren();
 
     elements.quizFeedback.textContent =
@@ -963,10 +1140,10 @@ function restartExperience() {
     elements.certificateForm.reset();
 
     elements.certificateForm.classList.remove("hidden");
-
     elements.generatedCertificate.classList.add("hidden");
 
     elements.printButton.disabled = true;
+    elements.downloadButton.disabled = true;
 
     elements.jumpscareToggle.textContent =
         state.jumpscaresEnabled
@@ -975,27 +1152,35 @@ function restartExperience() {
 
     elements.notification.classList.add("hidden");
 
+    creditsTypingIndex = 0;
+    creditsRemaining = 10;
+
+    elements.creditsOutput.textContent = "";
+    elements.countdown.textContent = "10";
+    elements.progress.style.width = "0%";
+
     showScreen("boot");
 
     notify("SYSTEM RESET // READY", 1800);
 }
 
 
-/* 28. EVENT LISTENERS
+/* 29. EVENT LISTENERS
    --------------------------------------------------------- */
 
-// Start the experience.
-// Fullscreen is requested directly from the user's click.
+// Start experience and request fullscreen.
 
 elements.startButton.addEventListener("click", () => {
-
     const fullscreenRequest =
         document.documentElement.requestFullscreen;
 
     if (fullscreenRequest) {
         document.documentElement.requestFullscreen()
             .catch(error => {
-                console.warn("Fullscreen unavailable:", error);
+                console.warn(
+                    "Fullscreen unavailable:",
+                    error
+                );
             });
     }
 
@@ -1008,42 +1193,40 @@ elements.pauseButton.addEventListener(
     pauseStory
 );
 
-
 elements.skipButton.addEventListener(
     "click",
     skipStory
 );
-
 
 elements.jumpscareToggle.addEventListener(
     "click",
     toggleJumpscares
 );
 
-
 elements.quizForm.addEventListener(
     "submit",
     evaluateQuiz
 );
-
 
 elements.certificateButton.addEventListener(
     "click",
     openCertificate
 );
 
-
 elements.certificateForm.addEventListener(
     "submit",
     generateCertificate
 );
-
 
 elements.printButton.addEventListener(
     "click",
     printCertificate
 );
 
+elements.downloadButton.addEventListener(
+    "click",
+    downloadCertificate
+);
 
 elements.restartButton.addEventListener(
     "click",
@@ -1051,14 +1234,10 @@ elements.restartButton.addEventListener(
 );
 
 
-/* 29. KEYBOARD CONTROLS
+/* 30. KEYBOARD CONTROLS
    --------------------------------------------------------- */
 
-// Spacebar pauses/resumes the story.
-// Escape can still be used to leave browser fullscreen.
-
 document.addEventListener("keydown", event => {
-
     if (
         state.currentScreen !== "story" ||
         event.target.matches("input, textarea, button")
@@ -1067,20 +1246,153 @@ document.addEventListener("keydown", event => {
     }
 
     if (event.code === "Space") {
-
         event.preventDefault();
-
         pauseStory();
     }
 });
 
 
-/* 30. INITIALIZATION
+/* 31. DISCLAIMER AND CREDITS ELEMENTS
+   --------------------------------------------------------- */
+
+const warningElements = {
+    acknowledgeButton: document.getElementById(
+        "acknowledge-warning-button"
+    ),
+    creditsOutput: document.getElementById("credits-output"),
+    countdown: document.getElementById("credits-countdown"),
+    progress: document.getElementById("credits-progress-fill")
+};
+
+const projectCredits = [
+    "GOT GUTS? ...WE'LL SEE.",
+    "",
+    "PROJECT CREDITS",
+    "------------------------------",
+    "",
+    "JUMPSCARE VIDEO ASSETS",
+    "SOURCE: VLIPSY LIBRARY",
+    "",
+    "HORROR SHORT STORY",
+    "SOURCE: BUZZFEED",
+    "",
+    "------------------------------",
+    "TRANSMISSION: COMPLETE",
+    "G.G. TERMINAL SYSTEMS",
+    "END OF ARCHIVE."
+].join("\n");
+
+let creditsTypingTimer = null;
+let creditsCountdownTimer = null;
+let creditsTypingIndex = 0;
+let creditsRemaining = 10;
+
+let disclaimerAcknowledged = false;
+
+
+/* 32. DISCLAIMER FLOW
+   --------------------------------------------------------- */
+
+// The first Start click opens the disclaimer.
+// The next Start click begins the story after acknowledgement.
+
+elements.startButton.addEventListener("click", event => {
+    if (disclaimerAcknowledged) {
+        return;
+    }
+
+    event.preventDefault();
+    event.stopImmediatePropagation();
+
+    showScreen("warning");
+}, true);
+
+
+warningElements.acknowledgeButton.addEventListener("click", () => {
+    disclaimerAcknowledged = true;
+    showScreen("boot");
+});
+
+
+/* 33. CREDITS TYPEWRITER
+   --------------------------------------------------------- */
+
+function typeCredits() {
+    clearTimeout(creditsTypingTimer);
+
+    if (creditsTypingIndex >= projectCredits.length) {
+        startCreditsCountdown();
+        return;
+    }
+
+    warningElements.creditsOutput.textContent +=
+        projectCredits.charAt(creditsTypingIndex);
+
+    creditsTypingIndex++;
+
+    creditsTypingTimer = setTimeout(typeCredits, 35);
+}
+
+
+/* 34. CREDITS COUNTDOWN
+   --------------------------------------------------------- */
+
+function startCreditsCountdown() {
+    clearInterval(creditsCountdownTimer);
+
+    creditsRemaining = 10;
+
+    warningElements.countdown.textContent =
+        String(creditsRemaining);
+
+    warningElements.progress.style.width = "0%";
+
+    creditsCountdownTimer = setInterval(() => {
+        creditsRemaining--;
+
+        warningElements.countdown.textContent =
+            String(creditsRemaining);
+
+        warningElements.progress.style.width =
+            `${((10 - creditsRemaining) / 10) * 100}%`;
+
+        if (creditsRemaining <= 0) {
+            clearInterval(creditsCountdownTimer);
+            creditsCountdownTimer = null;
+
+            warningElements.progress.style.width = "100%";
+
+            beginActualQuiz();
+        }
+    }, 1000);
+}
+
+
+/* 35. BEGIN CREDITS
+   --------------------------------------------------------- */
+
+function beginCredits() {
+    clearTimeout(creditsTypingTimer);
+    clearInterval(creditsCountdownTimer);
+
+    creditsTypingIndex = 0;
+    creditsRemaining = 10;
+
+    warningElements.creditsOutput.textContent = "";
+    warningElements.countdown.textContent = "10";
+    warningElements.progress.style.width = "0%";
+
+    showScreen("credits");
+
+    typeCredits();
+}
+
+
+/* 36. INITIALIZATION
    --------------------------------------------------------- */
 
 function initializeApplication() {
-
-    showScreen("boot");
+    showScreen("warning");
 
     elements.jumpscareToggle.setAttribute(
         "aria-pressed",
@@ -1091,6 +1403,7 @@ function initializeApplication() {
     elements.skipButton.disabled = true;
 
     elements.printButton.disabled = true;
+    elements.downloadButton.disabled = true;
 
     console.log(
         "%cGOT GUTS? ...WE'LL SEE.",

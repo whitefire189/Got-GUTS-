@@ -1735,3 +1735,232 @@ input:focus-visible {
         transition-duration: 0.01ms !important;
     }
 }
+
+
+.monitor-engraving {
+    margin-left: auto;
+    margin-right: 28px;
+
+    color: #aaa38a;
+
+    font-family: Georgia, serif;
+    font-size: 10px;
+    font-style: italic;
+
+    letter-spacing: 0.3px;
+
+    opacity: 0.65;
+
+    text-shadow:
+        0 1px 1px rgba(0, 0, 0, 0.9),
+        0 -1px 1px rgba(255, 255, 255, 0.08);
+}
+
+.download-button {
+    margin: 24px auto 0;
+}
+
+@media (max-width: 420px) {
+    .monitor-engraving {
+        margin-right: 10px;
+        font-size: 8px;
+    }
+}
+
+
+/* =========================================================
+   31. DISCLAIMER SCREEN
+   ========================================================= */
+
+.disclaimer-content {
+    width: min(850px, 100%);
+    margin: 0 auto;
+    padding: 35px 30px;
+    overflow-y: auto;
+}
+
+.disclaimer-content > h2 {
+    margin: 18px 0;
+    color: #d1ff9b;
+    font-family: Georgia, serif;
+    font-size: clamp(36px, 5vw, 58px);
+    font-weight: 900;
+    letter-spacing: 5px;
+    text-align: center;
+    text-shadow: 0 0 16px rgba(177, 239, 120, 0.18);
+}
+
+.disclaimer-divider,
+.credits-divider {
+    width: 100%;
+    height: 1px;
+    margin: 22px 0 30px;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        #a28d5c,
+        transparent
+    );
+}
+
+.disclaimer-category {
+    margin: 25px 0;
+}
+
+.disclaimer-category h3 {
+    margin-bottom: 13px;
+    color: #a28d5c;
+    font-size: 13px;
+    letter-spacing: 3px;
+}
+
+.disclaimer-category ul {
+    padding-left: 24px;
+    color: #b1ef78;
+    font-family: monospace;
+    font-size: 13px;
+    line-height: 2;
+}
+
+.disclaimer-category li {
+    padding-left: 5px;
+    margin-bottom: 5px;
+}
+
+.disclaimer-category li::marker {
+    color: #a28d5c;
+}
+
+.disclaimer-legal {
+    margin-top: 30px;
+    padding: 18px;
+    border: 1px solid rgba(182, 91, 69, 0.45);
+    background: rgba(182, 91, 69, 0.07);
+}
+
+.disclaimer-legal p {
+    color: #c58c78;
+    font-family: monospace;
+    font-size: 12px;
+    line-height: 1.9;
+    text-align: center;
+}
+
+.disclaimer-confirmation {
+    margin: 25px 0;
+    color: #8c987b;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-align: center;
+}
+
+
+/* =========================================================
+   32. CREDITS SCREEN
+   ========================================================= */
+
+.credits-content {
+    width: min(760px, 100%);
+    margin: 0 auto;
+    padding: 45px 30px;
+}
+
+.credits-content h2 {
+    margin: 20px 0;
+    color: #d1ff9b;
+    font-family: Georgia, serif;
+    font-size: clamp(30px, 4vw, 46px);
+    letter-spacing: 4px;
+}
+
+.credits-terminal-label {
+    margin: 25px 0 15px;
+    color: #a28d5c;
+    font-family: monospace;
+    font-size: 12px;
+}
+
+.credits-output {
+    min-height: 230px;
+    margin: 0;
+    color: #b1ef78;
+    font-family: monospace;
+    font-size: 14px;
+    line-height: 2;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.credits-countdown {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 35px;
+    color: #8c987b;
+    font-family: monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+}
+
+.credits-countdown strong {
+    color: #d1ff9b;
+    font-size: 25px;
+    min-width: 28px;
+    text-align: center;
+    text-shadow: 0 0 12px rgba(177, 239, 120, 0.3);
+}
+
+.credits-progress-track {
+    width: 100%;
+    height: 3px;
+    margin-top: 16px;
+    background: rgba(177, 239, 120, 0.12);
+    overflow: hidden;
+}
+
+.credits-progress-fill {
+    width: 0%;
+    height: 100%;
+    background: #b1ef78;
+    transition: width 1s linear;
+}
+
+
+/* =========================================================
+   33. RESPONSIVE ADJUSTMENTS
+   ========================================================= */
+
+@media (max-width: 760px) {
+    .disclaimer-content,
+    .credits-content {
+        padding: 25px 18px;
+    }
+
+    .disclaimer-category ul {
+        font-size: 11px;
+    }
+
+    .credits-output {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 420px) {
+    .disclaimer-content > h2 {
+        letter-spacing: 2px;
+    }
+
+    .disclaimer-category h3 {
+        font-size: 11px;
+    }
+
+    .disclaimer-legal p {
+        font-size: 10px;
+    }
+
+    .credits-countdown {
+        gap: 6px;
+        font-size: 9px;
+    }
+}

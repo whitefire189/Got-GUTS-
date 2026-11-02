@@ -4,61 +4,612 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="theme-color"
+        content="#10110c"
+    >
+
+    <meta
+        name="description"
+        content="One story. One test. One chance. Do you have the guts?"
+    >
+
     <title>GOT GUTS? ...WE'LL SEE.</title>
+
     <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
 
-    <main class="monitor">
-        <div class="screen">
+    <!-- APPLICATION ROOT -->
+    <main class="application" id="application">
 
-            <!-- WELCOME SCREEN -->
-            <div class="screen-content" id="welcome-screen">
+        <!-- AMBIENT BACKGROUND -->
+        <div class="ambient-background" aria-hidden="true">
+            <div class="ambient-glow"></div>
+            <div class="background-grain"></div>
+        </div>
 
-                <p class="system-text">SYSTEM ONLINE // 1987</p>
 
-                <h1>GOT GUTS?</h1>
-                <h2>...WE'LL SEE.</h2>
+        <!-- CRT EXPERIENCE -->
+        <section class="experience" id="experience">
 
-                <p class="intro">ONE STORY. ONE TEST. ONE CHANCE.</p>
+            <!-- MONITOR FRAME -->
+            <div class="monitor" id="monitor">
 
-                <button id="start-button">[ ENTER ]</button>
+                <div class="monitor-brand" aria-hidden="true">
+                    G.G. TERMINAL SYSTEMS
+                </div>
 
-                <p class="warning">
-                    DO NOT INTERRUPT THE TRANSMISSION.
-                </p>
+                <!-- MONITOR SCREEN -->
+                <div class="screen" id="screen">
+
+                    <!-- SCREEN REFLECTION -->
+                    <div class="screen-reflection" aria-hidden="true"></div>
+
+                    <!-- SCREEN SCANLINES -->
+                    <div class="screen-scanlines" aria-hidden="true"></div>
+
+
+                    <!-- BOOT SCREEN -->
+                    <section
+                        class="screen-content boot-screen"
+                        id="boot-screen"
+                        aria-labelledby="boot-title"
+                    >
+
+                        <header class="terminal-header">
+                            <span>G.G. TERMINAL</span>
+                            <span class="terminal-indicator">
+                                <span class="status-light"></span>
+                                SYSTEM ONLINE
+                            </span>
+                        </header>
+
+                        <div class="boot-content">
+
+                            <p class="system-text">
+                                INITIALIZING TRANSMISSION // 1987
+                            </p>
+
+                            <div class="title-container">
+                                <p class="title-overline">
+                                    AN INTERACTIVE HORROR EXPERIENCE
+                                </p>
+
+                                <h1 id="boot-title">
+                                    GOT GUTS?
+                                </h1>
+
+                                <h2>
+                                    ...WE'LL SEE.
+                                </h2>
+                            </div>
+
+                            <div class="boot-divider"></div>
+
+                            <p class="intro">
+                                ONE STORY. ONE TEST. ONE CHANCE.
+                            </p>
+
+                            <button
+                                class="primary-button"
+                                id="start-button"
+                                type="button"
+                            >
+                                <span>[ ENTER ]</span>
+                                <span class="button-arrow">↗</span>
+                            </button>
+
+                            <p class="warning">
+                                DO NOT INTERRUPT THE TRANSMISSION.
+                            </p>
+
+                        </div>
+
+                        <footer class="terminal-footer">
+                            <span>TERMINAL ID: GG-001</span>
+                            <span>BUILD 01.87</span>
+                        </footer>
+
+                    </section>
+
+
+                    <!-- STORY SCREEN -->
+                    <section
+                        class="screen-content story-screen hidden"
+                        id="story-screen"
+                        aria-labelledby="story-title"
+                    >
+
+                        <header class="terminal-header">
+
+                            <span>INCOMING TRANSMISSION</span>
+
+                            <span class="terminal-indicator">
+                                <span class="status-light active"></span>
+                                RECEIVING
+                            </span>
+
+                        </header>
+
+                        <div class="story-heading">
+
+                            <div>
+                                <p class="section-label">
+                                    TRANSMISSION // 001
+                                </p>
+
+                                <h2 id="story-title">
+                                    FIRST WORDS
+                                </h2>
+                            </div>
+
+                            <div class="transmission-number">
+                                001<span>/001</span>
+                            </div>
+
+                        </div>
+
+
+                        <!-- STORY PROGRESS -->
+                        <div class="progress-section">
+
+                            <div class="progress-information">
+                                <span>DATA RECEIVED</span>
+                                <span id="story-progress-text">0%</span>
+                            </div>
+
+                            <div
+                                class="progress-track"
+                                role="progressbar"
+                                aria-label="Story progress"
+                                aria-valuemin="0"
+                                aria-valuemax="100"
+                                aria-valuenow="0"
+                                id="story-progress"
+                            >
+                                <div
+                                    class="progress-fill"
+                                    id="story-progress-fill"
+                                ></div>
+                            </div>
+
+                        </div>
+
+
+                        <!-- STORY OUTPUT -->
+                        <div
+                            class="story-output-container"
+                            id="story-output-container"
+                        >
+
+                            <div
+                                id="story-output"
+                                class="story-output"
+                                aria-live="off"
+                            ></div>
+
+                        </div>
+
+
+                        <!-- STORY STATUS -->
+                        <div class="story-bottom">
+
+                            <div class="story-status-container">
+                                <span class="status-light active"></span>
+
+                                <p
+                                    class="story-status"
+                                    id="story-status"
+                                    aria-live="polite"
+                                >
+                                    AWAITING DATA...
+                                </p>
+                            </div>
+
+                            <div class="story-controls">
+
+                                <button
+                                    class="text-button"
+                                    id="pause-button"
+                                    type="button"
+                                    disabled
+                                >
+                                    PAUSE
+                                </button>
+
+                                <button
+                                    class="text-button"
+                                    id="skip-button"
+                                    type="button"
+                                    disabled
+                                >
+                                    SKIP STORY
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- STORY SETTINGS -->
+                        <footer class="story-footer">
+
+                            <button
+                                class="text-button"
+                                id="jumpscare-toggle"
+                                type="button"
+                            >
+                                JUMPSCARES: ON
+                            </button>
+
+                            <span>
+                                ESC TO EXIT FULLSCREEN
+                            </span>
+
+                        </footer>
+
+                    </section>
+
+
+                    <!-- QUIZ SCREEN -->
+                    <section
+                        class="screen-content quiz-screen hidden"
+                        id="quiz-screen"
+                        aria-labelledby="quiz-title"
+                    >
+
+                        <header class="terminal-header">
+
+                            <span>TRANSMISSION ARCHIVE</span>
+
+                            <span class="terminal-indicator">
+                                <span class="status-light active"></span>
+                                EVALUATION MODE
+                            </span>
+
+                        </header>
+
+
+                        <div class="quiz-heading">
+
+                            <p class="section-label">
+                                FINAL PROCEDURE // 002
+                            </p>
+
+                            <h2 id="quiz-title">
+                                HOW MUCH DID YOU REMEMBER?
+                            </h2>
+
+                            <p class="quiz-description">
+                                Complete the missing information to verify
+                                that you received the entire transmission.
+                            </p>
+
+                        </div>
+
+
+                        <!-- QUIZ PROGRESS -->
+                        <div class="progress-section">
+
+                            <div class="progress-information">
+                                <span>RESPONSES COMPLETED</span>
+
+                                <span id="quiz-progress-text">
+                                    0 / 5
+                                </span>
+                            </div>
+
+                            <div
+                                class="progress-track"
+                                role="progressbar"
+                                aria-label="Quiz progress"
+                                aria-valuemin="0"
+                                aria-valuemax="5"
+                                aria-valuenow="0"
+                                id="quiz-progress"
+                            >
+                                <div
+                                    class="progress-fill"
+                                    id="quiz-progress-fill"
+                                ></div>
+                            </div>
+
+                        </div>
+
+
+                        <!-- QUESTIONS ARE INSERTED BY JAVASCRIPT -->
+                        <form id="quiz-form" class="quiz-form">
+
+                            <div
+                                id="quiz-questions"
+                                class="quiz-questions"
+                            ></div>
+
+                            <div class="quiz-actions">
+
+                                <p
+                                    class="quiz-feedback"
+                                    id="quiz-feedback"
+                                    aria-live="polite"
+                                >
+                                    ALL RESPONSES REQUIRED.
+                                </p>
+
+                                <button
+                                    class="primary-button"
+                                    id="submit-quiz-button"
+                                    type="submit"
+                                >
+                                    <span>SUBMIT RESPONSES</span>
+                                    <span class="button-arrow">↗</span>
+                                </button>
+
+                            </div>
+
+                        </form>
+
+                    </section>
+
+
+                    <!-- RESULTS SCREEN -->
+                    <section
+                        class="screen-content results-screen hidden"
+                        id="results-screen"
+                        aria-labelledby="results-title"
+                    >
+
+                        <header class="terminal-header">
+
+                            <span>EVALUATION COMPLETE</span>
+
+                            <span class="terminal-indicator">
+                                <span class="status-light active"></span>
+                                REPORT GENERATED
+                            </span>
+
+                        </header>
+
+                        <div class="results-content">
+
+                            <p class="section-label">
+                                TRANSMISSION REPORT // 003
+                            </p>
+
+                            <h2 id="results-title">
+                                TEST RESULTS
+                            </h2>
+
+                            <div class="score-display">
+
+                                <span
+                                    class="score-value"
+                                    id="score-value"
+                                >
+                                    0/5
+                                </span>
+
+                                <span class="score-caption">
+                                    CORRECT RESPONSES
+                                </span>
+
+                            </div>
+
+                            <p
+                                class="result-message"
+                                id="result-message"
+                            >
+                                EVALUATION COMPLETE.
+                            </p>
+
+                            <button
+                                class="primary-button"
+                                id="certificate-button"
+                                type="button"
+                            >
+                                <span>GENERATE CERTIFICATE</span>
+                                <span class="button-arrow">↗</span>
+                            </button>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- CERTIFICATE SCREEN -->
+                    <section
+                        class="screen-content certificate-screen hidden"
+                        id="certificate-screen"
+                        aria-labelledby="certificate-title"
+                    >
+
+                        <header class="terminal-header">
+
+                            <span>DOCUMENT GENERATOR</span>
+
+                            <span class="terminal-indicator">
+                                CERTIFICATE // 001
+                            </span>
+
+                        </header>
+
+
+                        <div class="certificate-content">
+
+                            <div class="certificate-border">
+
+                                <p class="certificate-overline">
+                                    G.G. TERMINAL SYSTEMS PRESENTS
+                                </p>
+
+                                <h2 id="certificate-title">
+                                    TOO UNFAZED BY
+                                    <span>HALLOWEEN SPOOK...</span>
+                                </h2>
+
+                                <div class="certificate-divider"></div>
+
+                                <p class="certificate-description">
+                                    THIS DOCUMENT CERTIFIES THAT
+                                </p>
+
+
+                                <form id="certificate-form">
+
+                                    <label
+                                        for="participant-name"
+                                        class="name-label"
+                                    >
+                                        ENTER YOUR NAME
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        id="participant-name"
+                                        name="participant-name"
+                                        maxlength="40"
+                                        autocomplete="name"
+                                        placeholder="YOUR NAME..."
+                                        required
+                                    >
+
+                                    <button
+                                        class="primary-button"
+                                        id="generate-certificate-button"
+                                        type="submit"
+                                    >
+                                        <span>GENERATE DOCUMENT</span>
+                                        <span class="button-arrow">↗</span>
+                                    </button>
+
+                                </form>
+
+
+                                <div
+                                    class="generated-certificate hidden"
+                                    id="generated-certificate"
+                                >
+
+                                    <p class="certificate-recipient">
+                                        THIS CERTIFICATE IS AWARDED TO
+                                    </p>
+
+                                    <h3 id="certificate-recipient-name">
+                                        PARTICIPANT
+                                    </h3>
+
+                                    <p class="certificate-achievement">
+                                        FOR COMPLETING THE TRANSMISSION
+                                        AND SURVIVING THE EXPERIENCE.
+                                    </p>
+
+                                    <div class="certificate-record">
+
+                                        <span>
+                                            SCORE:
+                                            <strong id="certificate-score">
+                                                0/5
+                                            </strong>
+                                        </span>
+
+                                        <span>
+                                            RECORD:
+                                            <strong id="certificate-date">
+                                                --/--/----
+                                            </strong>
+                                        </span>
+
+                                    </div>
+
+                                    <p class="certificate-seal">
+                                        G.G. // VERIFIED
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <footer class="certificate-footer">
+
+                            <button
+                                class="text-button"
+                                id="print-certificate-button"
+                                type="button"
+                                disabled
+                            >
+                                PRINT CERTIFICATE
+                            </button>
+
+                            <button
+                                class="text-button"
+                                id="restart-button"
+                                type="button"
+                            >
+                                RESTART EXPERIENCE
+                            </button>
+
+                        </footer>
+
+                    </section>
+
+                </div>
+
+
+                <!-- MONITOR LOWER FRAME -->
+                <div class="monitor-lower-frame">
+
+                    <div class="monitor-signature">
+                        G O T&nbsp; G U T S
+                    </div>
+
+                    <div class="monitor-power">
+                        <span class="power-light"></span>
+                        <span>POWER</span>
+                    </div>
+
+                </div>
 
             </div>
 
-
-            <!-- STORY SCREEN -->
-            <div class="screen-content story-screen hidden" id="story-screen">
-
-                <p class="system-text">INCOMING TRANSMISSION // 001</p>
-
-                <div id="story-output"></div>
-
-                <p class="story-status">AWAITING DATA...</p>
-
-                <button id="jumpscare-toggle" type="button">
-                    JUMPSCARES: ON
-                </button>
-
-            </div>
+        </section>
 
 
-            <!-- JUMPSCARE OVERLAY -->
-            <div class="jumpscare-overlay hidden" id="jumpscare-overlay">
+        <!-- FULLSCREEN JUMPSCARE LAYER -->
+        <div
+            class="jumpscare-overlay hidden"
+            id="jumpscare-overlay"
+            aria-hidden="true"
+        >
 
-                <video id="jumpscare-video" playsinline></video>
-
-            </div>
+            <video
+                id="jumpscare-video"
+                playsinline
+                preload="auto"
+            ></video>
 
         </div>
+
+
+        <!-- SYSTEM NOTIFICATION -->
+        <div
+            class="system-notification hidden"
+            id="system-notification"
+            role="status"
+            aria-live="polite"
+        >
+            <span class="notification-indicator"></span>
+            <span id="notification-message"></span>
+        </div>
+
     </main>
+
 
     <script src="js/script.js"></script>
 
 </body>
 </html>
-

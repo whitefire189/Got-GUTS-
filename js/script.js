@@ -94,9 +94,6 @@ const state = {
 /* 03. STORY DATA
    --------------------------------------------------------- */
 
-// Original story passages preserved.
-// The repeated passage is intentionally retained.
-
 const storyPassages = [
     {
         text: "STORY TRANSMISSION INCOMING...",
@@ -132,11 +129,13 @@ const storyPassages = [
     },
     {
         text: "I pull the gag from our little girl's mouth. P-please... what do you want from me? Please let me go...",
-        pause: 2500
+        pause: 2500,
+        triggerSound: "cry"
     },
     {
         text: `My wife's smile falls from her face. With a heavy heart, I put the gag back in as the girl starts to scream. I take her back to the room, locking her in and shutting the lights out. When I return, I find my wife crying. "It's ok, honey," I tell her, "The next one will be better. I promise."`,
-        pause: 2500
+        pause: 2500,
+        triggerSound: "doorClose"
     },
     {
         text: "\n\nEND OF TEST TRANSMISSION.",
@@ -148,8 +147,6 @@ const totalStoryCharacters = storyPassages.reduce(
     (total, passage) => total + passage.text.length,
     0
 );
-
-
 /* 04. JUMPSCARE VIDEO LIBRARY
    --------------------------------------------------------- */
 
@@ -276,6 +273,15 @@ function typeNextCharacter() {
     if (!passage) {
         completeStory();
         return;
+    }
+
+    // Trigger specific sound logic right as the passage begins typing
+    if (state.currentCharacter === 0) {
+        if (passage.triggerSound === "cry") {
+            playSound("cry");
+        } else if (passage.triggerSound === "doorClose") {
+            playSound("doorClose");
+        }
     }
 
     if (state.currentCharacter < passage.text.length) {
@@ -1171,22 +1177,17 @@ function restartExperience() {
 // Start experience and request fullscreen.
 
 elements.startButton.addEventListener("click", () => {
-    const fullscreenRequest =
-        document.documentElement.requestFullscreen;
+    initAudioContext(); // Unlocks browser audio permissions immediately
 
+    const fullscreenRequest = document.documentElement.requestFullscreen;
     if (fullscreenRequest) {
-        document.documentElement.requestFullscreen()
-            .catch(error => {
-                console.warn(
-                    "Fullscreen unavailable:",
-                    error
-                );
-            });
+        document.documentElement.requestFullscreen().catch(error => {
+            console.warn("Fullscreen unavailable:", error);
+        });
     }
 
     beginStory();
 });
-
 
 elements.pauseButton.addEventListener(
     "click",
@@ -1420,4 +1421,256 @@ function initializeApplication() {
     );
 }
 
-initializeApplication();
+/*/* =========================================================
+   LOGICAL AUDIO ENGINE // GOT GUTS?
+   ========================================================= */
+
+const audioAssets = {
+    beep: new Audio("assets/audio/beep.mp3"),
+    cry: new Audio("assets/audio/cry.mp3"),
+    doorClose: new Audio("assets/audio/door-close.mp3"),
+    footsteps: new Audio("assets/audio/footsteps.mp3"),
+    glitch: new Audio("assets/audio/glitch-effect.mp3"),
+    print: new Audio("assets/audio/print.mp3"),
+    static: new Audio("assets/audio/static.mp3")
+};
+
+// Configure continuous background static loop
+audioAssets.static.loop = true;
+audioAssets.static.volume = 0.25;
+
+let activeAudioTimeouts = [];
+let footstepsTimer = null;
+let isAudioGloballySuspended = false;
+
+// Master playback function enforcing the 4-second rule and exceptions
+function playSound(soundName, forcePlay = false) {
+    if (isAudioGloballySuspended && soundName !== "glitch") return;
+
+    const sound = audioAssets[soundName];
+    if (!sound) return;
+
+    // Do not re-trigger static if it's already playing
+    if (soundName === "static" && !sound.paused) return;
+
+    sound.currentTime = 0;
+    sound.volume = (soundName === "static") ? 0.25 : 0.7;
+
+    const playPromise = sound.play();
+    if (playPromise !== undefined) {
+        playPromise.catch(err => console.warn(`Audio play blocked for ${soundName}:`, err));
+    }
+
+    // 4-Second Rule: 
+    // - Applies to files bigger than 4sec (except 'footsteps' and looping 'static').
+    // - Short files or forced plays finish naturally unless specified.
+    const isExempt = (soundName === "footsteps" || soundName === "static" || forcePlay);
+    
+    if (!isExempt) {
+        const timeoutId = setTimeout(() => {
+            if (!sound.paused) {
+                sound.pause();
+                sound.currentTime = 0;
+            }
+        }, 4000);
+        activeAudioTimeouts.push(timeoutId);
+    }
+}
+
+// Suspend ALL audio immediately during jumpscare
+function suspendAllAudioForJumpscare() {
+    isAudioGloballySuspended = true;
+
+    // Clear active 4-second cutoff timers
+    activeAudioTimeouts.forEach(id => clearTimeout(id));
+    activeAudioTimeouts = [];
+
+    // Pause all playing audio elements
+    Object.values(audioAssets).forEach(sound => {
+        if (!sound.paused) {
+            sound.pause();
+            sound.currentTime = 0;
+        }
+    });
+
+    if (footstepsTimer) {
+        clearTimeout(footstepsTimer);
+        footstepsTimer = null;
+    }
+}
+
+// Resume audio after jumpscare: GLITCH SOUND FIRST, then static loop & footsteps
+function resumeAudioAfterJumpscare() {
+    isAudioGloballySuspended = false;
+
+    // 1. Play glitch sound FIRST as required
+    playSound("glitch", true);
+
+    // 2. Resume continuous background static loop
+    playSound("static", true);
+
+    // 3. Restart random footsteps loop
+    startRandomFootsteps();
+}
+
+// Random footsteps before entering and during the storyline
+function startRandomFootsteps() {
+    if (footstepsTimer || isAudioGloballySuspended) return;
+
+    const triggerFootstep = () => {
+        if (!isAudioGloballySuspended) {
+            playSound("footsteps", true); // Footsteps are exempt from 4s cap
+        }
+        // Random interval between 7 to 15 seconds
+        const randomDelay = Math.floor(Math.random() * 8000) + 7000;
+        footstepsTimer = setTimeout(triggerFootstep, randomDelay);
+    };
+
+    triggerFootstep();
+}
+
+// Initialize browser AudioContext unlock on first user click anywhere
+let audioCtxUnlocked = false;
+function unlockAudioContext() {
+    if (audioCtxUnlocked) return;
+    audioCtxUnlocked = true;
+
+    // Start background static immediately across the experience upon first interaction
+    playSound("static", true);
+    startRandomFootsteps();
+}
+
+document.addEventListener("click", unlockAudioContext, { once: true });
+document.addEventListener("keydown", unlockAudioContext, { once: true });
+/* =========================================================
+   38. BROWSER AUDIO PERMISSION & CONTEXT RESUME LOGIC
+   ========================================================= */
+
+// Create a global AudioContext to manage and unlock browser sound permissions
+let audioContext = null;
+
+function initAudioContext() {
+    if (!audioContext) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (AudioContextClass) {
+            audioContext = new AudioContextClass();
+        }
+    }
+
+    if (audioContext && audioContext.state === "suspended") {
+        audioContext.resume().then(() => {
+            console.log("[*] Audio context unlocked and resumed successfully.");
+        }).catch(err => {
+            console.warn("[!] Failed to resume audio context:", err);
+        });
+    }
+}
+
+// Automatically bind the permission unlock to the very first user interaction anywhere or specifically on buttons
+document.addEventListener("click", () => {
+    initAudioContext();
+}, { once: true }); // Triggers once on the initial click to satisfy browser security policies
+
+/* =========================================================
+   39. EXPLICIT AUDIO PERMISSION & ENABLE BUTTON
+   ========================================================= */
+
+const soundToggleButton = document.getElementById("sound-toggle-btn");
+let soundSystemEnabled = false;
+
+if (soundToggleButton) {
+    soundToggleButton.addEventListener("click", () => {
+        // Initialize and resume browser AudioContext
+        initAudioContext();
+
+        // Unlock and play background static to verify audio pipeline is hot
+        audioAssets.static.play().then(() => {
+            soundSystemEnabled = true;
+            soundSystemEnabledText = "SOUNDS: ACTIVE";
+            
+            soundToggleButton.querySelector("span").textContent = "[ AUDIO SYSTEM ACTIVE ]";
+            soundToggleButton.style.borderColor = "var(--phosphor-bright)";
+            
+            notify("AUDIO SYSTEM ENGAGED // STATIC ONLINE");
+            playSound("beep");
+        }).catch(err => {
+            console.warn("Audio permission denied or blocked:", err);
+            notify("AUDIO PERMISSION BLOCKED BY BROWSER");
+        });
+    });
+}
+
+/* =========================================================
+   40. NON-REPEATING JUMPSCARE POOL EXTENSION
+   ========================================================= */
+
+// Queue pool to ensure all jumpscares play once before any repetition
+let _jumpscareQueue = [];
+
+// Override playJumpscare to pull from the non-repeating queue
+playJumpscare = function() {
+    if (
+        !state.jumpscaresEnabled ||
+        !state.isTyping ||
+        state.isPaused ||
+        state.isJumpscarePlaying
+    ) {
+        return;
+    }
+
+    state.isJumpscarePlaying = true;
+
+    // Suspend audio for jumpscare
+    stopAllAudioForJumpscare();
+
+    // Refill and shuffle the queue if it's empty
+    if (_jumpscareQueue.length === 0) {
+        _jumpscareQueue = [...jumpscareFiles];
+        for (let i = _jumpscareQueue.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [_jumpscareQueue[i], _jumpscareQueue[j]] = [_jumpscareQueue[j], _jumpscareQueue[i]];
+        }
+    }
+
+    const selectedVideo = _jumpscareQueue.pop();
+
+    elements.jumpscareVideo.src =
+        `assets/jumpscares/${selectedVideo}`;
+
+    elements.jumpscareVideo.muted = false;
+    elements.jumpscareVideo.volume = 1;
+
+    elements.jumpscareOverlay.classList.remove("hidden");
+
+    elements.jumpscareOverlay.setAttribute(
+        "aria-hidden",
+        "false"
+    );
+
+    elements.jumpscareVideo.currentTime = 0;
+
+    const playback = elements.jumpscareVideo.play();
+
+    playback.then(() => {
+        if (!state.isJumpscarePlaying) {
+            return;
+        }
+
+        state.jumpscareDurationTimer = setTimeout(() => {
+            stopJumpscare();
+
+            if (state.isTyping && !state.isPaused) {
+                scheduleJumpscare();
+            }
+        }, JUMPSCARE_DURATION);
+
+    }).catch(error => {
+        console.error("Jumpscare playback failed:", error);
+
+        stopJumpscare();
+
+        if (state.isTyping && !state.isPaused) {
+            scheduleJumpscare();
+        }
+    });
+};

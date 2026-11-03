@@ -1,7 +1,7 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="icon" href="data:,">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -32,18 +32,17 @@
         </div>
 
 
-        <!-- CRT EXPERIENCE -->
+        <!-- CRT EXPERIENCE VIEWPORT (MONITOR ASSET CONTAINER) -->
         <section class="experience" id="experience">
 
-            <!-- MONITOR FRAME -->
-            <div class="monitor" id="monitor">
+            <!-- MONITOR FRAME CONTAINER -->
+            <div class="monitor-viewport" id="monitor-viewport">
 
-                <div class="monitor-brand" aria-hidden="true">
-                    G.G. TERMINAL SYSTEMS
-                </div>
+                <!-- OG MONITOR IMAGE ASSET (Place your monitor image file in the project directory and update src if needed) -->
+                <img src="assets/images/VHS monitor.png" alt="CRT Monitor Frame" class="monitor-asset-frame" aria-hidden="true">
 
-                <!-- MONITOR SCREEN -->
-                <div class="screen" id="screen">
+                <!-- MONITOR SCREEN CONTENT OVERLAY -->
+                <div class="monitor-screen-overlay" id="screen">
 
                     <!-- SCREEN REFLECTION -->
                     <div class="screen-reflection" aria-hidden="true"></div>
@@ -66,6 +65,16 @@
                                 SYSTEM ONLINE
                             </span>
                         </header>
+
+                        <!-- Inside your boot-content div in index.html -->
+<button
+    class="primary-button"
+    id="sound-toggle-btn"
+    type="button"
+>
+    <span>[ ENABLE AUDIO SYSTEM ]</span>
+    <span class="button-arrow">🔊</span>
+</button>
 
                         <div class="boot-content">
 
@@ -354,422 +363,400 @@
                     </section>
 
 
-                    <
-<!-- RESULTS SCREEN -->
-<section
-    class="screen-content results-screen hidden"
-    id="results-screen"
-    aria-labelledby="results-title"
->
+                    <!-- RESULTS SCREEN -->
+                    <section
+                        class="screen-content results-screen hidden"
+                        id="results-screen"
+                        aria-labelledby="results-title"
+                    >
 
-    <header class="terminal-header">
-        <span>EVALUATION COMPLETE</span>
+                        <header class="terminal-header">
+                            <span>EVALUATION COMPLETE</span>
 
-        <span class="terminal-indicator">
-            <span class="status-light active"></span>
-            REPORT GENERATED
-        </span>
-    </header>
+                            <span class="terminal-indicator">
+                                <span class="status-light active"></span>
+                                REPORT GENERATED
+                            </span>
+                        </header>
 
-    <div class="results-content">
+                        <div class="results-content">
 
-        <p class="section-label">
-            TRANSMISSION REPORT // 003
-        </p>
+                            <p class="section-label">
+                                TRANSMISSION REPORT // 003
+                            </p>
 
-        <h2 id="results-title">
-            TEST RESULTS
-        </h2>
+                            <h2 id="results-title">
+                                TEST RESULTS
+                            </h2>
 
-        <div class="score-display">
+                            <div class="score-display">
 
-            <span
-                class="score-value"
-                id="score-value"
-            >
-                0/5
-            </span>
+                                <span
+                                    class="score-value"
+                                    id="score-value"
+                                >
+                                    0/5
+                                </span>
 
-            <span class="score-caption">
-                CORRECT RESPONSES
-            </span>
+                                <span class="score-caption">
+                                    CORRECT RESPONSES
+                                </span>
+
+                            </div>
+
+                            <p
+                                class="result-message"
+                                id="result-message"
+                            >
+                                EVALUATION COMPLETE.
+                            </p>
+
+                            <button
+                                class="primary-button"
+                                id="certificate-button"
+                                type="button"
+                            >
+                                <span>GENERATE CERTIFICATE</span>
+                                <span class="button-arrow">↗</span>
+                            </button>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- CERTIFICATE SCREEN -->
+                    <section
+                        class="screen-content certificate-screen hidden"
+                        id="certificate-screen"
+                        aria-labelledby="certificate-title"
+                    >
+
+                        <header class="terminal-header">
+
+                            <span>DOCUMENT GENERATOR</span>
+
+                            <span class="terminal-indicator">
+                                CERTIFICATE // 001
+                            </span>
+
+                        </header>
+
+
+                        <div class="certificate-content">
+
+                            <div class="certificate-border">
+
+                                <p class="certificate-overline">
+                                    G.G. TERMINAL SYSTEMS PRESENTS
+                                </p>
+
+                                <h2 id="certificate-title">
+                                    TOO UNFAZED BY
+                                    <span>HALLOWEEN SPOOK...</span>
+                                </h2>
+
+                                <div class="certificate-divider"></div>
+
+                                <p class="certificate-description">
+                                    THIS DOCUMENT CERTIFIES THAT
+                                </p>
+
+
+                                <!-- CERTIFICATE NAME FORM -->
+                                <form id="certificate-form">
+
+                                    <label
+                                        for="participant-name"
+                                        class="name-label"
+                                    >
+                                        ENTER YOUR NAME
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        id="participant-name"
+                                        name="participant-name"
+                                        maxlength="40"
+                                        autocomplete="name"
+                                        placeholder="YOUR NAME..."
+                                        required
+                                    >
+
+                                    <button
+                                        class="primary-button"
+                                        id="generate-certificate-button"
+                                        type="submit"
+                                    >
+                                        <span>GENERATE DOCUMENT</span>
+                                        <span class="button-arrow">↗</span>
+                                    </button>
+
+                                </form>
+
+
+                                <!-- GENERATED CERTIFICATE -->
+                                <div
+                                    class="generated-certificate hidden"
+                                    id="generated-certificate"
+                                >
+
+                                    <p class="certificate-recipient">
+                                        THIS CERTIFICATE IS AWARDED TO
+                                    </p>
+
+                                    <h3 id="certificate-recipient-name">
+                                        PARTICIPANT
+                                    </h3>
+
+                                    <p class="certificate-achievement">
+                                        FOR COMPLETING THE TRANSMISSION
+                                        AND SURVIVING THE EXPERIENCE.
+                                    </p>
+
+                                    <div class="certificate-record">
+
+                                        <span>
+                                            SCORE:
+                                            <strong id="certificate-score">
+                                                0/5
+                                            </strong>
+                                        </span>
+
+                                        <span>
+                                            RECORD:
+                                            <strong id="certificate-date">
+                                                --/--/----
+                                            </strong>
+                                        </span>
+
+                                    </div>
+
+                                    <p class="certificate-seal">
+                                        G.G. // VERIFIED
+                                    </p>
+
+                                    <!-- DOWNLOAD CERTIFICATE -->
+                                    <button
+                                        class="primary-button download-button"
+                                        id="download-certificate-button"
+                                        type="button"
+                                        disabled
+                                    >
+                                        <span>DOWNLOAD PNG</span>
+                                        <span class="button-arrow">↓</span>
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- CERTIFICATE CONTROLS -->
+                        <footer class="certificate-footer">
+
+                            <button
+                                class="text-button"
+                                id="print-certificate-button"
+                                type="button"
+                                disabled
+                            >
+                                PRINT CERTIFICATE
+                            </button>
+
+                            <button
+                                class="text-button"
+                                id="restart-button"
+                                type="button"
+                            >
+                                RESTART EXPERIENCE
+                            </button>
+
+                        </footer>
+
+                    </section>
+
+
+                    <!-- DISCLAIMER SCREEN -->
+                    <section
+                        class="screen-content disclaimer-screen hidden"
+                        id="warning-screen"
+                        aria-labelledby="warning-title"
+                    >
+
+                        <header class="terminal-header">
+                            <span>SYSTEM NOTICE // 001</span>
+
+                            <span class="terminal-indicator">
+                                <span class="status-light"></span>
+                                WARNING
+                            </span>
+                        </header>
+
+                        <div class="disclaimer-content">
+
+                            <p class="section-label">
+                                G.G. TERMINAL SYSTEMS // PRE-ACCESS NOTICE
+                            </p>
+
+                            <h2 id="warning-title">
+                                DISCLAIMER
+                            </h2>
+
+                            <div class="disclaimer-divider"></div>
+
+                            <div class="disclaimer-category">
+                                <h3>CONTENT WARNINGS</h3>
+
+                                <ul>
+                                    <li>VISUAL JUMPSCARES</li>
+                                    <li>CREEPY SOUND EFFECTS</li>
+                                    <li>VIOLENT THEMES</li>
+                                    <li>ABDUCTION, CRUELTY AND PSYCHOLOGICAL HORROR IN THE STORY</li>
+                                </ul>
+                            </div>
+
+                            <div class="disclaimer-category">
+
+                                <h3>NOT SUITABLE FOR</h3>
+
+                                <ul>
+                                    <li>VIEWERS BELOW 13 YEARS OF AGE</li>
+                                    <li>PHOTOSENSITIVE VIEWERS</li>
+                                    <li>ANYONE UNCOMFORTABLE WITH OR HAVING LOW TOLERANCE FOR HORROR</li>
+                                </ul>
+
+                            </div>
+
+                            <div class="disclaimer-legal">
+
+                                <p>
+                                    THE CREATOR OF THIS PROJECT IS NOT RESPONSIBLE
+                                    FOR THE CONSEQUENCES OF IGNORING THESE WARNINGS,
+                                    INCLUDING ANY HARM RESULTING FROM SUCH NEGLIGENCE.
+                                </p>
+
+                            </div>
+
+                            <p class="disclaimer-confirmation">
+                                PROCEED ONLY IF YOU ARE COMFORTABLE WITH THE CONTENT.
+                            </p>
+
+                            <button
+                                class="primary-button"
+                                id="acknowledge-warning-button"
+                                type="button"
+                            >
+                                <span>I UNDERSTAND. PROCEED.</span>
+                                <span class="button-arrow">↗</span>
+                            </button>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- CREDITS SCREEN -->
+                    <section
+                        class="screen-content credits-screen hidden"
+                        id="credits-screen"
+                        aria-labelledby="credits-title"
+                    >
+
+                        <header class="terminal-header">
+                            <span>TRANSMISSION CONCLUDED</span>
+
+                            <span class="terminal-indicator">
+                                ARCHIVE // 004
+                            </span>
+                        </header>
+
+                        <div class="credits-content">
+
+                            <p class="section-label">
+                                SYSTEM ARCHIVE // PROJECT ATTRIBUTION
+                            </p>
+
+                            <h2 id="credits-title">
+                                END TRANSMISSION
+                            </h2>
+
+                            <div class="credits-divider"></div>
+
+                            <p class="credits-terminal-label">
+                                > COMPILING PROJECT CREDITS...
+                            </p>
+
+                            <pre
+                                class="credits-output"
+                                id="credits-output"
+                                aria-live="polite"
+                            ></pre>
+
+                            <div class="credits-countdown">
+
+                                <span id="credits-countdown-label">
+                                    NEXT PHASE INITIALIZING IN
+                                </span>
+
+                                <strong id="credits-countdown">
+                                    10
+                                </strong>
+
+                                <span>SECONDS</span>
+
+                            </div>
+
+                            <div class="credits-progress-track">
+                                <div
+                                    class="credits-progress-fill"
+                                    id="credits-progress-fill"
+                                ></div>
+                            </div>
+
+                        </div>
+
+                    </section>
+
+                </div> <!-- END MONITOR SCREEN OVERLAY -->
+
+            </div> <!-- END MONITOR FRAME CONTAINER -->
+
+        </section>
+
+
+        <!-- FULLSCREEN JUMPSCARE LAYER -->
+        <div
+            class="jumpscare-overlay hidden"
+            id="jumpscare-overlay"
+            aria-hidden="true"
+        >
+
+            <video
+                id="jumpscare-video"
+                playsinline
+                preload="auto"
+            ></video>
 
         </div>
 
-        <p
-            class="result-message"
-            id="result-message"
-        >
-            EVALUATION COMPLETE.
-        </p>
 
-        <button
-            class="primary-button"
-            id="certificate-button"
-            type="button"
-        >
-            <span>GENERATE CERTIFICATE</span>
-            <span class="button-arrow">↗</span>
-        </button>
-
-    </div>
-
-</section>
-
-
-<!-- CERTIFICATE SCREEN -->
-<section
-    class="screen-content certificate-screen hidden"
-    id="certificate-screen"
-    aria-labelledby="certificate-title"
->
-
-    <header class="terminal-header">
-
-        <span>DOCUMENT GENERATOR</span>
-
-        <span class="terminal-indicator">
-            CERTIFICATE // 001
-        </span>
-
-    </header>
-
-
-    <div class="certificate-content">
-
-        <div class="certificate-border">
-
-            <p class="certificate-overline">
-                G.G. TERMINAL SYSTEMS PRESENTS
-            </p>
-
-            <h2 id="certificate-title">
-                TOO UNFAZED BY
-                <span>HALLOWEEN SPOOK...</span>
-            </h2>
-
-            <div class="certificate-divider"></div>
-
-            <p class="certificate-description">
-                THIS DOCUMENT CERTIFIES THAT
-            </p>
-
-
-            <!-- CERTIFICATE NAME FORM -->
-            <form id="certificate-form">
-
-                <label
-                    for="participant-name"
-                    class="name-label"
-                >
-                    ENTER YOUR NAME
-                </label>
-
-                <input
-                    type="text"
-                    id="participant-name"
-                    name="participant-name"
-                    maxlength="40"
-                    autocomplete="name"
-                    placeholder="YOUR NAME..."
-                    required
-                >
-
-                <button
-                    class="primary-button"
-                    id="generate-certificate-button"
-                    type="submit"
-                >
-                    <span>GENERATE DOCUMENT</span>
-                    <span class="button-arrow">↗</span>
-                </button>
-
-            </form>
-
-
-            <!-- GENERATED CERTIFICATE -->
-            <div
-                class="generated-certificate hidden"
-                id="generated-certificate"
-            >
-
-                <p class="certificate-recipient">
-                    THIS CERTIFICATE IS AWARDED TO
-                </p>
-
-                <h3 id="certificate-recipient-name">
-                    PARTICIPANT
-                </h3>
-
-                <p class="certificate-achievement">
-                    FOR COMPLETING THE TRANSMISSION
-                    AND SURVIVING THE EXPERIENCE.
-                </p>
-
-                <div class="certificate-record">
-
-                    <span>
-                        SCORE:
-                        <strong id="certificate-score">
-                            0/5
-                        </strong>
-                    </span>
-
-                    <span>
-                        RECORD:
-                        <strong id="certificate-date">
-                            --/--/----
-                        </strong>
-                    </span>
-
-                </div>
-
-                <p class="certificate-seal">
-                    G.G. // VERIFIED
-                </p>
-
-                <!-- DOWNLOAD CERTIFICATE -->
-                <button
-                    class="primary-button download-button"
-                    id="download-certificate-button"
-                    type="button"
-                    disabled
-                >
-                    <span>DOWNLOAD PNG</span>
-                    <span class="button-arrow">↓</span>
-                </button>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- CERTIFICATE CONTROLS -->
-    <footer class="certificate-footer">
-
-        <button
-            class="text-button"
-            id="print-certificate-button"
-            type="button"
-            disabled
-        >
-            PRINT CERTIFICATE
-        </button>
-
-        <button
-            class="text-button"
-            id="restart-button"
-            type="button"
-        >
-            RESTART EXPERIENCE
-        </button>
-
-    </footer>
-
-</section>
-
-</div>
-
-
-<!-- MONITOR LOWER FRAME -->
-<div class="monitor-lower-frame">
-
-    <div class="monitor-signature">
-        G O T&nbsp; G U T S
-    </div>
-
-    <div class="monitor-engraving">
-        Made by Naisaa💀
-    </div>
-
-    <div class="monitor-power">
-        <span class="power-light"></span>
-        <span>POWER</span>
-    </div>
-
-</div>
-
-</div>
-
-</section>
-
-
-<!-- FULLSCREEN JUMPSCARE LAYER -->
-<div
-    class="jumpscare-overlay hidden"
-    id="jumpscare-overlay"
-    aria-hidden="true"
->
-
-    <video
-        id="jumpscare-video"
-        playsinline
-        preload="auto"
-    ></video>
-
-</div>
-
-
-<!-- SYSTEM NOTIFICATION -->
-<div
-    class="system-notification hidden"
-    id="system-notification"
-    role="status"
-    aria-live="polite"
->
-    <span class="notification-indicator"></span>
-    <span id="notification-message"></span>
-</div>
-
-
-<!-- DISCLAIMER SCREEN -->
-<section
-    class="screen-content disclaimer-screen hidden"
-    id="warning-screen"
-    aria-labelledby="warning-title"
->
-
-    <header class="terminal-header">
-        <span>SYSTEM NOTICE // 001</span>
-
-        <span class="terminal-indicator">
-            <span class="status-light"></span>
-            WARNING
-        </span>
-    </header>
-
-    <div class="disclaimer-content">
-
-        <p class="section-label">
-            G.G. TERMINAL SYSTEMS // PRE-ACCESS NOTICE
-        </p>
-
-        <h2 id="warning-title">
-            DISCLAIMER
-        </h2>
-
-        <div class="disclaimer-divider"></div>
-
-        <div class="disclaimer-category">
-            <h3>CONTENT WARNINGS</h3>
-
-            <ul>
-                <li>VISUAL JUMPSCARES</li>
-                <li>CREEPY SOUND EFFECTS</li>
-                <li>VIOLENT THEMES</li>
-                <li>ABDUCTION, CRUELTY AND PSYCHOLOGICAL HORROR IN THE STORY</li>
-            </ul>
-        </div>
-
-        <div class="disclaimer-category">
-
-            <h3>NOT SUITABLE FOR</h3>
-
-            <ul>
-                <li>VIEWERS BELOW 13 YEARS OF AGE</li>
-                <li>PHOTOSENSITIVE VIEWERS</li>
-                <li>ANYONE UNCOMFORTABLE WITH OR HAVING LOW TOLERANCE FOR HORROR</li>
-            </ul>
-
-        </div>
-
-        <div class="disclaimer-legal">
-
-            <p>
-                THE CREATOR OF THIS PROJECT IS NOT RESPONSIBLE
-                FOR THE CONSEQUENCES OF IGNORING THESE WARNINGS,
-                INCLUDING ANY HARM RESULTING FROM SUCH NEGLIGENCE.
-            </p>
-
-        </div>
-
-        <p class="disclaimer-confirmation">
-            PROCEED ONLY IF YOU ARE COMFORTABLE WITH THE CONTENT.
-        </p>
-
-        <button
-            class="primary-button"
-            id="acknowledge-warning-button"
-            type="button"
-        >
-            <span>I UNDERSTAND. PROCEED.</span>
-            <span class="button-arrow">↗</span>
-        </button>
-
-    </div>
-
-</section>
-
-
-<!-- CREDITS SCREEN -->
-<section
-    class="screen-content credits-screen hidden"
-    id="credits-screen"
-    aria-labelledby="credits-title"
->
-
-    <header class="terminal-header">
-        <span>TRANSMISSION CONCLUDED</span>
-
-        <span class="terminal-indicator">
-            ARCHIVE // 004
-        </span>
-    </header>
-
-    <div class="credits-content">
-
-        <p class="section-label">
-            SYSTEM ARCHIVE // PROJECT ATTRIBUTION
-        </p>
-
-        <h2 id="credits-title">
-            END TRANSMISSION
-        </h2>
-
-        <div class="credits-divider"></div>
-
-        <p class="credits-terminal-label">
-            > COMPILING PROJECT CREDITS...
-        </p>
-
-        <pre
-            class="credits-output"
-            id="credits-output"
+        <!-- SYSTEM NOTIFICATION -->
+        <div
+            class="system-notification hidden"
+            id="system-notification"
+            role="status"
             aria-live="polite"
-        ></pre>
-
-        <div class="credits-countdown">
-
-            <span id="credits-countdown-label">
-                NEXT PHASE INITIALIZING IN
-            </span>
-
-            <strong id="credits-countdown">
-                10
-            </strong>
-
-            <span>SECONDS</span>
-
+        >
+            <span class="notification-indicator"></span>
+            <span id="notification-message"></span>
         </div>
 
-        <div class="credits-progress-track">
-            <div
-                class="credits-progress-fill"
-                id="credits-progress-fill"
-            ></div>
-        </div>
+    </main>
 
-    </div>
-
-</section>
-
-
-</main>
-
-
-<script src="js/script.js"></script>
+    <script src="js/script.js"></script>
 
 </body>
 </html>

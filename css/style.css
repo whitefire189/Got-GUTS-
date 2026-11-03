@@ -1,7 +1,6 @@
-
 /* =========================================================
    GOT GUTS? ...WE'LL SEE.
-   VISUAL ENGINE // BUILD 02
+   VISUAL ENGINE // ASSET-FRAME OVERLAY BUILD
    ========================================================= */
 
 
@@ -13,13 +12,6 @@
 
     --background: #090a07;
     --background-soft: #10110c;
-
-    --monitor-shell: #38372d;
-    --monitor-edge: #514f40;
-    --monitor-highlight: #68634e;
-
-    --screen: #11180e;
-    --screen-deep: #0b1009;
 
     --phosphor: #b1ef78;
     --phosphor-bright: #d1ff9b;
@@ -47,7 +39,7 @@
 }
 
 
-/* 02. RESET
+/* 02. RESET & BASE
    --------------------------------------------------------- */
 
 * {
@@ -88,7 +80,7 @@ input:focus-visible {
 }
 
 ::selection {
-    color: var(--screen);
+    color: #11180e;
     background: var(--phosphor);
 }
 
@@ -102,252 +94,110 @@ input:focus-visible {
 
 .application {
     position: relative;
-
     min-height: 100vh;
     width: 100%;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     padding: 36px 24px;
-
     isolation: isolate;
     overflow: hidden;
-
     background:
-        radial-gradient(
-            ellipse at 50% 48%,
-            rgba(68, 78, 43, 0.15),
-            transparent 62%
-        ),
-        radial-gradient(
-            ellipse at 50% 100%,
-            rgba(0, 0, 0, 0.7),
-            transparent 60%
-        ),
+        radial-gradient(ellipse at 50% 48%, rgba(68, 78, 43, 0.15), transparent 62%),
+        radial-gradient(ellipse at 50% 100%, rgba(0, 0, 0, 0.7), transparent 60%),
         var(--background);
 }
 
 .ambient-background {
     position: fixed;
     inset: 0;
-
     z-index: -1;
-
     pointer-events: none;
 }
 
 .ambient-glow {
     position: absolute;
-
     width: 75vw;
     height: 75vw;
-
     max-width: 950px;
     max-height: 950px;
-
     left: 50%;
     top: 50%;
-
     transform: translate(-50%, -50%);
-
     border-radius: 50%;
-
-    background:
-        radial-gradient(
-            circle,
-            rgba(107, 130, 66, 0.075),
-            transparent 70%
-        );
-
+    background: radial-gradient(circle, rgba(107, 130, 66, 0.075), transparent 70%);
     filter: blur(35px);
 }
 
 .background-grain {
     position: absolute;
     inset: 0;
-
     opacity: 0.09;
-
-    background-image:
-        url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
-
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
     pointer-events: none;
 }
 
 
-/* 04. EXPERIENCE AND MONITOR
+/* 04. MONITOR VIEWPORT & ASSET OVERLAY
    --------------------------------------------------------- */
 
 .experience {
     position: relative;
-
     z-index: 1;
-
-    width: min(1120px, 96vw);
-
+    /* CHANGE THIS: Lower the max-width from 1120px to something smaller like 800px or 700px */
+    width: min(800px, 90vw); 
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.monitor {
+.monitor-viewport {
     position: relative;
-
     width: 100%;
-    height: min(850px, 90vh);
-
-    min-height: 590px;
-
-    padding: 25px 25px 18px;
-
     display: flex;
-    flex-direction: column;
-
-    background:
-        linear-gradient(
-            145deg,
-            #565344 0%,
-            #38372d 28%,
-            #29291f 75%,
-            #444234 100%
-        );
-
-    border: 1px solid var(--monitor-edge);
-
-    border-radius: 28px;
-
-    box-shadow:
-        0 35px 90px rgba(0, 0, 0, 0.75),
-        0 12px 24px rgba(0, 0, 0, 0.55),
-        inset 0 2px 2px rgba(255, 255, 255, 0.08),
-        inset 0 -5px 12px rgba(0, 0, 0, 0.35);
-}
-
-.monitor-brand {
-    height: 24px;
-
-    flex-shrink: 0;
-
-    display: flex;
-    align-items: center;
     justify-content: center;
-
-    color: #aaa38a;
-
-    font-size: 9px;
-    font-weight: bold;
-
-    letter-spacing: 5px;
-
-    text-shadow:
-        0 1px 1px rgba(0, 0, 0, 0.8);
+    align-items: center;
 }
 
-
-/* 05. CRT SCREEN
-   --------------------------------------------------------- */
-
-.screen {
-    position: relative;
-
+.monitor-asset-frame {
     width: 100%;
-    flex: 1;
+    height: auto;
+    display: block;
+    pointer-events: none;
+    user-select: none;
+}
 
-    min-height: 0;
-
+.monitor-screen-overlay {
+    position: absolute;
+    top: 10%;
+    
+    /* Shift left slightly and increase width to make text area wider */
+    left: 12%;  /* Reduced from 12% */
+    width: 80%; /* Increased from 76% */
+    
+    height: 58%;
     overflow: hidden;
-
     isolation: isolate;
-
-    border: 2px solid #080c07;
-
-    border-radius: 16px;
-
-    background:
-        radial-gradient(
-            ellipse at center,
-            #192316 0%,
-            #10170e 68%,
-            #0a1009 100%
-        );
-
-    box-shadow:
-        inset 0 0 65px rgba(0, 0, 0, 0.9),
-        inset 0 0 15px rgba(177, 239, 120, 0.04),
-        0 0 3px rgba(0, 0, 0, 0.9);
+    border-radius: 12px;
+    background: radial-gradient(ellipse at center, #192316 0%, #10170e 68%, #0a1009 100%);
 }
 
-.screen-reflection {
-    position: absolute;
-
-    inset: 0;
-
-    z-index: 10;
-
-    pointer-events: none;
-
-    background:
-        linear-gradient(
-            125deg,
-            rgba(255, 255, 255, 0.035),
-            transparent 25%,
-            transparent 70%,
-            rgba(255, 255, 255, 0.012)
-        );
-
-    border-radius: inherit;
-}
-
-.screen-scanlines {
-    position: absolute;
-
-    inset: 0;
-
-    z-index: 11;
-
-    pointer-events: none;
-
-    opacity: 0.18;
-
-    background:
-        repeating-linear-gradient(
-            to bottom,
-            transparent 0,
-            transparent 3px,
-            rgba(0, 0, 0, 0.35) 4px,
-            rgba(0, 0, 0, 0.35) 5px
-        );
-}
-
-
-/* 06. SCREEN CONTENT
+/* 05. SCREEN CONTENT GENERAL
    --------------------------------------------------------- */
 
 .screen-content {
     position: absolute;
-
     inset: 0;
-
     z-index: 2;
-
     width: 100%;
     height: 100%;
-
     min-height: 0;
-
     display: flex;
     flex-direction: column;
-
-    padding: clamp(24px, 4vw, 48px);
-
+    padding: clamp(16px, 3vw, 32px);
     color: var(--phosphor);
-
     text-shadow: var(--glow-soft);
-
     overflow: hidden;
-
     animation: screen-appear 0.55s ease both;
 }
 
@@ -356,7 +206,6 @@ input:focus-visible {
         opacity: 0;
         transform: translateY(5px);
     }
-
     to {
         opacity: 1;
         transform: translateY(0);
@@ -364,92 +213,63 @@ input:focus-visible {
 }
 
 
-/* 07. TERMINAL HEADER AND FOOTER
+/* 06. TERMINAL HEADER AND FOOTER
    --------------------------------------------------------- */
 
 .terminal-header {
     width: 100%;
-
     display: flex;
     justify-content: space-between;
     align-items: center;
-
     gap: 15px;
-
-    padding-bottom: 16px;
-
+    padding-bottom: 12px;
     border-bottom: 1px solid var(--border);
-
     color: var(--text-muted);
-
     font-size: 10px;
-
     letter-spacing: 2px;
 }
 
 .terminal-indicator {
     display: flex;
     align-items: center;
-
     gap: 9px;
-
     color: var(--phosphor-muted);
-
     font-size: 9px;
-
     white-space: nowrap;
 }
 
 .status-light {
     width: 7px;
     height: 7px;
-
     flex-shrink: 0;
-
     display: inline-block;
-
     border-radius: 50%;
-
     background: var(--text-dim);
-
-    box-shadow: none;
 }
 
 .status-light.active {
     background: var(--phosphor);
-
-    box-shadow:
-        0 0 7px var(--phosphor),
-        0 0 14px rgba(177, 239, 120, 0.35);
-
+    box-shadow: 0 0 7px var(--phosphor), 0 0 14px rgba(177, 239, 120, 0.35);
     animation: status-pulse 2s infinite;
 }
 
 @keyframes status-pulse {
-    50% {
-        opacity: 0.45;
-    }
+    50% { opacity: 0.45; }
 }
 
 .terminal-footer {
     width: 100%;
-
     display: flex;
     justify-content: space-between;
-
-    padding-top: 14px;
-
+    padding-top: 10px;
     border-top: 1px solid var(--border);
-
     color: var(--text-dim);
-
     font-size: 9px;
-
     letter-spacing: 2px;
 }
 
 
-/* 08. BOOT SCREEN
+/* 07. BOOT SCREEN
    --------------------------------------------------------- */
 
 .boot-screen {
@@ -459,157 +279,98 @@ input:focus-visible {
 .boot-content {
     width: 100%;
     max-width: 680px;
-
     margin: auto;
-
     display: flex;
     flex-direction: column;
     align-items: center;
-
     text-align: center;
 }
 
 .system-text {
     color: var(--phosphor-muted);
-
     font-size: 10px;
-
     letter-spacing: 3px;
 }
 
 .title-container {
-    margin-top: clamp(25px, 5vh, 55px);
+    margin-top: clamp(15px, 4vh, 35px);
 }
 
 .title-overline {
     color: var(--text-muted);
-
     font-size: 9px;
-
     letter-spacing: 4px;
 }
 
 .boot-screen h1 {
-    margin: 24px 0 0;
-
+    margin: 18px 0 0;
     color: var(--phosphor-bright);
-
     font-family: var(--font-terminal);
-
-    font-size: clamp(48px, 8vw, 96px);
-
+    font-size: clamp(38px, 6vw, 76px);
     font-weight: 700;
-
     line-height: 1;
-
     letter-spacing: 5px;
-
-    text-shadow:
-        0 0 8px rgba(177, 239, 120, 0.55),
-        0 0 24px rgba(177, 239, 120, 0.22),
-        0 0 55px rgba(177, 239, 120, 0.1);
+    text-shadow: 0 0 8px rgba(177, 239, 120, 0.55), 0 0 24px rgba(177, 239, 120, 0.22);
 }
 
 .boot-screen h2 {
-    margin: 20px 0 0;
-
+    margin: 15px 0 0;
     color: var(--phosphor-muted);
-
     font-family: var(--font-display);
-
-    font-size: clamp(22px, 4vw, 35px);
-
+    font-size: clamp(18px, 3vw, 28px);
     font-weight: normal;
-
     font-style: italic;
-
     letter-spacing: 4px;
 }
 
 .boot-divider {
     width: min(180px, 45%);
-
     height: 1px;
-
-    margin: 35px 0 25px;
-
-    background:
-        linear-gradient(
-            to right,
-            transparent,
-            var(--brass),
-            transparent
-        );
-
+    margin: 25px 0 20px;
+    background: linear-gradient(to right, transparent, var(--brass), transparent);
     opacity: 0.7;
 }
 
 .intro {
     color: var(--phosphor-muted);
-
     font-size: 11px;
-
     letter-spacing: 3px;
 }
 
 .warning {
-    margin-top: 45px;
-
+    margin-top: 30px;
     color: var(--text-muted);
-
     font-size: 9px;
-
     letter-spacing: 2px;
 }
 
 
-/* 09. BUTTON SYSTEM
+/* 08. BUTTON SYSTEM
    --------------------------------------------------------- */
 
 .primary-button {
     min-width: 200px;
-
-    margin-top: 30px;
-
-    padding: 15px 20px;
-
+    margin-top: 20px;
+    padding: 12px 18px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-
     gap: 20px;
-
     border: 1px solid var(--border-strong);
-
     border-radius: 2px;
-
     background: rgba(177, 239, 120, 0.035);
-
     color: var(--phosphor-bright);
-
     font-size: 11px;
-
     letter-spacing: 2px;
-
     cursor: pointer;
-
-    transition:
-        background 0.2s ease,
-        color 0.2s ease,
-        border-color 0.2s ease,
-        box-shadow 0.2s ease,
-        transform 0.2s ease;
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
 
 .primary-button:hover:not(:disabled) {
-    color: var(--screen);
-
+    color: #11180e;
     background: var(--phosphor);
-
     border-color: var(--phosphor-bright);
-
     box-shadow: var(--glow-strong);
-
     transform: translateY(-2px);
 }
 
@@ -628,27 +389,17 @@ input:focus-visible {
 
 .text-button {
     padding: 7px 0;
-
     border: none;
-
     background: transparent;
-
     color: var(--text-muted);
-
     font-size: 9px;
-
     letter-spacing: 1.5px;
-
     cursor: pointer;
-
-    transition:
-        color 0.2s ease,
-        text-shadow 0.2s ease;
+    transition: color 0.2s ease, text-shadow 0.2s ease;
 }
 
 .text-button:hover:not(:disabled) {
     color: var(--phosphor-bright);
-
     text-shadow: var(--glow-strong);
 }
 
@@ -658,7 +409,7 @@ input:focus-visible {
 }
 
 
-/* 10. STORY SCREEN
+/* 09. STORY SCREEN
    --------------------------------------------------------- */
 
 .story-screen {
@@ -667,21 +418,16 @@ input:focus-visible {
 
 .story-heading {
     width: 100%;
-
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-
-    margin: 25px 0 20px;
+    margin: 18px 0 15px;
 }
 
 .section-label {
-    margin: 0 0 12px;
-
+    margin: 0 0 8px;
     color: var(--phosphor-muted);
-
     font-size: 9px;
-
     letter-spacing: 2.5px;
 }
 
@@ -689,123 +435,82 @@ input:focus-visible {
 .quiz-heading h2,
 .results-content h2 {
     margin: 0;
-
     color: var(--phosphor-bright);
-
-    font-size: clamp(20px, 3vw, 29px);
-
+    font-size: clamp(18px, 2.5vw, 24px);
     letter-spacing: 3px;
 }
 
 .transmission-number {
     color: var(--phosphor);
-
-    font-size: 24px;
-
+    font-size: 20px;
     font-weight: bold;
-
     letter-spacing: 1px;
 }
 
 .transmission-number span {
     color: var(--text-dim);
-
-    font-size: 13px;
+    font-size: 12px;
 }
 
 .progress-section {
     width: 100%;
-
-    margin-bottom: 18px;
+    margin-bottom: 14px;
 }
 
 .progress-information {
     display: flex;
     justify-content: space-between;
-
-    margin-bottom: 9px;
-
+    margin-bottom: 6px;
     color: var(--text-muted);
-
     font-size: 9px;
-
     letter-spacing: 1.5px;
 }
 
 .progress-track {
     width: 100%;
     height: 4px;
-
     overflow: hidden;
-
     background: rgba(177, 239, 120, 0.09);
-
     border-radius: 10px;
 }
 
 .progress-fill {
     width: 0%;
     height: 100%;
-
     background: var(--phosphor);
-
     box-shadow: 0 0 9px rgba(177, 239, 120, 0.55);
-
     transition: width 0.25s ease;
 }
 
 .story-output-container {
     width: 100%;
-
     flex: 1;
-
     min-height: 0;
-
-    padding: 22px 20px;
-
+    padding: 16px;
     overflow: hidden;
-
     border: 1px solid rgba(177, 239, 120, 0.08);
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(0, 0, 0, 0.16),
-            rgba(177, 239, 120, 0.015)
-        );
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.16), rgba(177, 239, 120, 0.015));
 }
 
 .story-output {
     width: 100%;
     height: 100%;
-
     overflow-y: auto;
     overflow-x: hidden;
-
-    padding-right: 12px;
-
+    padding-right: 8px;
     color: var(--phosphor);
-
-    font-size: clamp(13px, 1.5vw, 16px);
-
-    line-height: 2;
-
+    font-size: clamp(12px, 1.3vw, 15px);
+    line-height: 1.8;
     letter-spacing: 0.5px;
-
     white-space: pre-wrap;
-
     overflow-wrap: anywhere;
-
     scrollbar-width: thin;
-
-    scrollbar-color:
-        var(--phosphor-muted)
-        transparent;
+    scrollbar-color: var(--phosphor-muted) transparent;
 }
 
 .story-output::-webkit-scrollbar,
 .quiz-questions::-webkit-scrollbar {
-    width: 5px;
+    width: 4px;
 }
 
 .story-output::-webkit-scrollbar-thumb,
@@ -813,71 +518,50 @@ input:focus-visible {
     background: var(--phosphor-muted);
 }
 
-.story-output::-webkit-scrollbar-track,
-.quiz-questions::-webkit-scrollbar-track {
-    background: transparent;
-}
-
 .story-status-container {
     display: flex;
     align-items: center;
-
     gap: 10px;
 }
 
 .story-bottom {
     width: 100%;
-
-    min-height: 45px;
-
+    min-height: 40px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-
     gap: 15px;
-
-    padding: 10px 0;
+    padding: 8px 0;
 }
 
 .story-status {
     margin: 0;
-
     color: var(--phosphor-muted);
-
     font-size: 9px;
-
     letter-spacing: 1.5px;
 }
 
 .story-controls {
     display: flex;
     align-items: center;
-
-    gap: 22px;
+    gap: 18px;
 }
 
 .story-footer {
     width: 100%;
-
     display: flex;
     justify-content: space-between;
     align-items: center;
-
     gap: 12px;
-
-    padding-top: 12px;
-
+    padding-top: 10px;
     border-top: 1px solid var(--border);
-
     color: var(--text-dim);
-
     font-size: 9px;
-
     letter-spacing: 1px;
 }
 
 
-/* 11. QUIZ SCREEN
+/* 10. QUIZ SCREEN
    --------------------------------------------------------- */
 
 .quiz-screen {
@@ -885,888 +569,65 @@ input:focus-visible {
 }
 
 .quiz-heading {
-    margin: 25px 0 20px;
+    margin: 18px 0 15px;
 }
 
 .quiz-description {
     max-width: 650px;
-
-    margin: 13px 0 0;
-
+    margin: 10px 0 0;
     color: var(--text-muted);
-
     font-size: 11px;
-
-    line-height: 1.8;
-
+    line-height: 1.6;
     letter-spacing: 0.5px;
 }
 
 .quiz-form {
     flex: 1;
-
     min-height: 0;
-
     display: flex;
     flex-direction: column;
 }
 
 .quiz-questions {
     flex: 1;
-
     min-height: 0;
-
     display: flex;
     flex-direction: column;
-
-    gap: 12px;
-
-    padding: 5px 12px 15px 0;
-
+    gap: 10px;
+    padding: 5px 10px 10px 0;
     overflow-y: auto;
-
     scrollbar-width: thin;
-
-    scrollbar-color:
-        var(--phosphor-muted)
-        transparent;
+    scrollbar-color: var(--phosphor-muted) transparent;
 }
 
-.question-card {
-    padding: 15px 17px;
-
-    border: 1px solid var(--border);
-
-    background: rgba(0, 0, 0, 0.13);
-
-    transition:
-        border-color 0.2s ease,
-        background 0.2s ease;
-}
-
-.question-card:focus-within {
-    border-color: var(--border-strong);
-
-    background: rgba(177, 239, 120, 0.035);
-}
-
-.question-number {
-    display: block;
-
-    margin-bottom: 10px;
-
-    color: var(--phosphor-muted);
-
-    font-size: 9px;
-
-    letter-spacing: 2px;
-}
-
-.question-prompt {
-    margin: 0 0 13px;
-
-    color: var(--phosphor);
-
-    font-size: 12px;
-
-    line-height: 1.8;
-
-    letter-spacing: 0.3px;
-}
-
-.question-input {
-    width: 100%;
-
-    padding: 11px 12px;
-
-    border: 1px solid rgba(177, 239, 120, 0.2);
-
-    border-radius: 2px;
-
-    background: rgba(0, 0, 0, 0.3);
-
-    color: var(--phosphor-bright);
-
-    font-size: 12px;
-
-    letter-spacing: 1px;
-
-    caret-color: var(--phosphor);
-}
-
-.question-input::placeholder {
-    color: var(--text-dim);
-}
-
-.question-input:focus {
-    border-color: var(--phosphor-muted);
-    outline: none;
-
-    box-shadow: 0 0 10px rgba(177, 239, 120, 0.08);
-}
-
-.quiz-actions {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    gap: 15px;
-
-    padding-top: 12px;
-
-    border-top: 1px solid var(--border);
-}
-
-.quiz-feedback {
-    margin: 0;
-
-    color: var(--text-muted);
-
-    font-size: 9px;
-
-    letter-spacing: 1px;
-}
-
-.quiz-actions .primary-button {
-    margin-top: 0;
-}
-
-
-/* 12. RESULTS SCREEN
-   --------------------------------------------------------- */
-
-.results-screen {
-    justify-content: space-between;
-}
-
-.results-content {
-    width: 100%;
-    max-width: 550px;
-
-    margin: auto;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    text-align: center;
-}
-
-.results-content h2 {
-    margin-bottom: 30px;
-}
-
-.score-display {
-    width: 190px;
-    height: 190px;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    border: 1px solid var(--border-strong);
-
-    border-radius: 50%;
-
-    background:
-        radial-gradient(
-            circle,
-            rgba(177, 239, 120, 0.09),
-            transparent 70%
-        );
-
-    box-shadow:
-        inset 0 0 25px rgba(177, 239, 120, 0.04),
-        0 0 25px rgba(177, 239, 120, 0.04);
-}
-
-.score-value {
-    color: var(--phosphor-bright);
-
-    font-size: 48px;
-
-    font-weight: bold;
-
-    text-shadow: var(--glow-strong);
-}
-
-.score-caption {
-    margin-top: 8px;
-
-    color: var(--text-muted);
-
-    font-size: 9px;
-
-    letter-spacing: 2px;
-}
-
-.result-message {
-    max-width: 420px;
-
-    margin: 28px 0 0;
-
-    color: var(--phosphor-muted);
-
-    font-size: 11px;
-
-    line-height: 1.8;
-
-    letter-spacing: 1px;
-
-    text-align: center;
-}
-
-
-/* 13. CERTIFICATE SCREEN
-   --------------------------------------------------------- */
-
-.certificate-screen {
-    text-align: center;
-}
-
-.certificate-content {
-    flex: 1;
-
-    min-height: 0;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    padding: 15px 0;
-
-    overflow-y: auto;
-}
-
-.certificate-border {
-    position: relative;
-
-    width: min(680px, 100%);
-
-    padding: clamp(22px, 4vw, 42px);
-
-    border: 1px solid var(--brass);
-
-    outline: 1px solid rgba(162, 141, 92, 0.25);
-
-    outline-offset: 6px;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(162, 141, 92, 0.055),
-            transparent 50%
-        );
-}
-
-.certificate-overline {
-    margin: 0 0 20px;
-
-    color: var(--brass);
-
-    font-size: 9px;
-
-    letter-spacing: 3px;
-}
-
-.certificate-border h2 {
-    margin: 0;
-
-    color: var(--phosphor-bright);
-
-    font-family: var(--font-display);
-
-    font-size: clamp(22px, 4vw, 36px);
-
-    font-weight: normal;
-
-    line-height: 1.35;
-
-    letter-spacing: 1px;
-}
-
-.certificate-border h2 span {
-    display: block;
-
-    margin-top: 5px;
-
-    color: var(--brass);
-
-    font-style: italic;
-}
-
-.certificate-divider {
-    width: 110px;
-    height: 1px;
-
-    margin: 22px auto;
-
-    background: var(--brass);
-
-    opacity: 0.8;
-}
-
-.certificate-description {
-    color: var(--text-muted);
-
-    font-size: 9px;
-
-    letter-spacing: 2px;
-}
-
-#certificate-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.name-label {
-    margin: 16px 0 10px;
-
-    color: var(--phosphor-muted);
-
-    font-size: 9px;
-
-    letter-spacing: 2px;
-}
-
-#participant-name {
-    width: min(340px, 100%);
-
-    padding: 12px;
-
-    border: 1px solid var(--border-strong);
-
-    background: rgba(0, 0, 0, 0.25);
-
-    color: var(--phosphor-bright);
-
-    text-align: center;
-
-    font-size: 13px;
-
-    letter-spacing: 2px;
-}
-
-#participant-name::placeholder {
-    color: var(--text-dim);
-}
-
-#participant-name:focus {
-    outline: none;
-
-    border-color: var(--phosphor-bright);
-
-    box-shadow: var(--glow-soft);
-}
-
-#certificate-form .primary-button {
-    margin-top: 20px;
-}
-
-.generated-certificate {
-    animation: screen-appear 0.5s ease both;
-}
-
-.certificate-recipient {
-    margin: 15px 0;
-
-    color: var(--text-muted);
-
-    font-size: 9px;
-
-    letter-spacing: 2px;
-}
-
-.generated-certificate h3 {
-    margin: 12px 0 18px;
-
-    color: var(--phosphor-bright);
-
-    font-family: var(--font-display);
-
-    font-size: clamp(23px, 4vw, 34px);
-
-    font-weight: normal;
-
-    font-style: italic;
-
-    overflow-wrap: anywhere;
-}
-
-.certificate-achievement {
-    max-width: 420px;
-
-    margin: 0 auto;
-
-    color: var(--phosphor-muted);
-
-    font-size: 10px;
-
-    line-height: 1.9;
-
-    letter-spacing: 1px;
-}
-
-.certificate-record {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-
-    gap: 20px;
-
-    margin-top: 25px;
-
-    color: var(--text-muted);
-
-    font-size: 9px;
-
-    letter-spacing: 1px;
-}
-
-.certificate-record strong {
-    color: var(--phosphor);
-}
-
-.certificate-seal {
-    margin: 25px 0 0;
-
-    color: var(--brass);
-
-    font-size: 10px;
-
-    letter-spacing: 4px;
-}
-
-.certificate-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    gap: 15px;
-
-    padding-top: 12px;
-
-    border-top: 1px solid var(--border);
-}
-
-
-/* 14. MONITOR LOWER FRAME
-   --------------------------------------------------------- */
-
-.monitor-lower-frame {
-    min-height: 47px;
-
-    flex-shrink: 0;
-
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    padding: 12px 18px 0;
-
-    color: #a39c82;
-
-    font-size: 9px;
-
-    letter-spacing: 2px;
-}
-
-.monitor-signature {
-    opacity: 0.75;
-}
-
-.monitor-power {
-    display: flex;
-    align-items: center;
-
-    gap: 9px;
-
-    color: #aaa38a;
-
-    font-size: 8px;
-
-    letter-spacing: 1px;
-}
-
-.power-light {
-    width: 6px;
-    height: 6px;
-
-    border-radius: 50%;
-
-    background: var(--phosphor-muted);
-
-    box-shadow: 0 0 8px rgba(177, 239, 120, 0.55);
-}
-
-
-/* 15. FULLSCREEN JUMPSCARE
+/* 15. FULLSCREEN JUMPSCARE & NOTIFICATIONS
    --------------------------------------------------------- */
 
 .jumpscare-overlay {
     position: fixed;
-
     inset: 0;
-
     z-index: 999999;
-
     width: 100vw;
     height: 100vh;
-
     display: flex;
     justify-content: center;
     align-items: center;
-
     overflow: hidden;
-
     background: #000;
-
-    animation: jumpscare-appear 0.08s linear both;
 }
 
 .jumpscare-overlay video {
-    display: block;
-
-    width: 100%;
-    height: 100%;
-
-    object-fit: cover;
-
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 100%;
+    min-height: 100%;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover; /* This forces the video to fill the screen without letterboxing or shifting to the side */
     background: #000;
 }
-
-@keyframes jumpscare-appear {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
-}
-
-
-/* 16. SYSTEM NOTIFICATIONS
-   --------------------------------------------------------- */
-
-.system-notification {
-    position: fixed;
-
-    right: 24px;
-    bottom: 24px;
-
-    z-index: 999998;
-
-    max-width: min(380px, calc(100vw - 48px));
-
-    display: flex;
-    align-items: center;
-
-    gap: 12px;
-
-    padding: 14px 18px;
-
-    border: 1px solid var(--border-strong);
-
-    background: rgba(12, 17, 10, 0.96);
-
-    color: var(--phosphor);
-
-    font-size: 10px;
-
-    line-height: 1.6;
-
-    letter-spacing: 1px;
-
-    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5);
-
-    animation: notification-enter 0.25s ease both;
-}
-
-.notification-indicator {
-    width: 7px;
-    height: 7px;
-
-    flex-shrink: 0;
-
-    border-radius: 50%;
-
-    background: var(--phosphor);
-
-    box-shadow: 0 0 8px var(--phosphor);
-}
-
-@keyframes notification-enter {
-    from {
-        opacity: 0;
-        transform: translateY(8px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-
-/* 17. PRINT STYLES
-   --------------------------------------------------------- */
-
-@media print {
-
-    body {
-        background: white !important;
-        color: black !important;
-    }
-
-    body * {
-        visibility: hidden !important;
-    }
-
-    #generated-certificate,
-    #generated-certificate * {
-        visibility: visible !important;
-    }
-
-    #generated-certificate {
-        position: absolute;
-
-        inset: 0;
-
-        width: 100%;
-
-        padding: 40px;
-
-        color: black !important;
-
-        background: white !important;
-
-        font-family: Georgia, serif;
-    }
-
-    .certificate-recipient,
-    .certificate-achievement,
-    .certificate-record,
-    .certificate-record strong,
-    .certificate-seal {
-        color: black !important;
-    }
-
-    .certificate-recipient {
-        margin-top: 70px;
-    }
-
-    .generated-certificate h3 {
-        color: #222 !important;
-
-        font-size: 36px;
-    }
-
-    .certificate-achievement {
-        margin-top: 35px;
-    }
-}
-
-
-/* 18. RESPONSIVE LAYOUT
-   --------------------------------------------------------- */
-
-@media (max-width: 760px) {
-
-    .application {
-        padding: 15px 10px;
-    }
-
-    .experience {
-        width: 100%;
-    }
-
-    .monitor {
-        height: 88vh;
-        min-height: 570px;
-
-        padding: 15px 12px 10px;
-
-        border-radius: 19px;
-    }
-
-    .monitor-brand {
-        height: 21px;
-
-        font-size: 8px;
-
-        letter-spacing: 3px;
-    }
-
-    .screen {
-        border-radius: 11px;
-    }
-
-    .screen-content {
-        padding: 23px 20px;
-    }
-
-    .boot-screen h1 {
-        letter-spacing: 2px;
-    }
-
-    .system-text,
-    .intro {
-        letter-spacing: 2px;
-    }
-
-    .story-heading h2,
-    .quiz-heading h2 {
-        font-size: 20px;
-    }
-
-    .story-output-container {
-        padding: 15px 12px;
-    }
-
-    .story-output {
-        font-size: 13px;
-        line-height: 1.85;
-    }
-
-    .story-bottom {
-        align-items: flex-start;
-        flex-direction: column;
-    }
-
-    .story-controls {
-        width: 100%;
-        justify-content: space-between;
-    }
-
-    .story-footer {
-        font-size: 8px;
-    }
-
-    .monitor-lower-frame {
-        min-height: 39px;
-
-        padding: 9px 10px 0;
-    }
-
-    .quiz-actions {
-        align-items: flex-start;
-        flex-direction: column;
-    }
-
-    .quiz-actions .primary-button {
-        width: 100%;
-    }
-
-    .certificate-border {
-        padding: 23px 17px;
-    }
-}
-
-
-@media (max-width: 420px) {
-
-    .terminal-header {
-        font-size: 8px;
-        letter-spacing: 1px;
-    }
-
-    .terminal-indicator {
-        font-size: 8px;
-        gap: 6px;
-    }
-
-    .title-overline {
-        font-size: 8px;
-        letter-spacing: 2px;
-    }
-
-    .boot-screen h1 {
-        font-size: 45px;
-    }
-
-    .boot-screen h2 {
-        font-size: 22px;
-    }
-
-    .warning {
-        font-size: 8px;
-        letter-spacing: 1px;
-    }
-
-    .transmission-number {
-        font-size: 19px;
-    }
-
-    .story-heading h2 {
-        font-size: 18px;
-        letter-spacing: 1px;
-    }
-
-    .certificate-record {
-        gap: 12px;
-    }
-
-    .certificate-footer {
-        flex-wrap: wrap;
-    }
-
-    .monitor-signature {
-        font-size: 8px;
-    }
-}
-
-
-/* 19. REDUCED MOTION
-   --------------------------------------------------------- */
-
-@media (prefers-reduced-motion: reduce) {
-
-    *,
-    *::before,
-    *::after {
-        scroll-behavior: auto !important;
-
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-
-        transition-duration: 0.01ms !important;
-    }
-}
-
-
-.monitor-engraving {
-    margin-left: auto;
-    margin-right: 28px;
-
-    color: #aaa38a;
-
-    font-family: Georgia, serif;
-    font-size: 10px;
-    font-style: italic;
-
-    letter-spacing: 0.3px;
-
-    opacity: 0.65;
-
-    text-shadow:
-        0 1px 1px rgba(0, 0, 0, 0.9),
-        0 -1px 1px rgba(255, 255, 255, 0.08);
-}
-
-.download-button {
-    margin: 24px auto 0;
-}
-
-@media (max-width: 420px) {
-    .monitor-engraving {
-        margin-right: 10px;
-        font-size: 8px;
-    }
-}
-
 
 /* =========================================================
    31. DISCLAIMER SCREEN
@@ -1775,192 +636,65 @@ input:focus-visible {
 .disclaimer-content {
     width: min(850px, 100%);
     margin: 0 auto;
-    padding: 35px 30px;
+    padding: 20px 15px;
     overflow-y: auto;
 }
 
-.disclaimer-content > h2 {
-    margin: 18px 0;
+/* Create a flex row wrapper for the heading and the proceed button */
+.disclaimer-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin: 12px 0;
+}
+
+.disclaimer-content > .disclaimer-header-row > h2 {
+    margin: 0;
     color: #d1ff9b;
     font-family: Georgia, serif;
-    font-size: clamp(36px, 5vw, 58px);
+    font-size: clamp(24px, 3.5vw, 38px); /* Slightly adjusted to fit side-by-side */
     font-weight: 900;
-    letter-spacing: 5px;
-    text-align: center;
+    letter-spacing: 4px;
     text-shadow: 0 0 16px rgba(177, 239, 120, 0.18);
 }
 
-.disclaimer-divider,
-.credits-divider {
-    width: 100%;
-    height: 1px;
-    margin: 22px 0 30px;
-    background: linear-gradient(
-        90deg,
-        transparent,
-        #a28d5c,
-        transparent
-    );
-}
-
-.disclaimer-category {
-    margin: 25px 0;
-}
-
-.disclaimer-category h3 {
-    margin-bottom: 13px;
-    color: #a28d5c;
-    font-size: 13px;
-    letter-spacing: 3px;
-}
-
-.disclaimer-category ul {
-    padding-left: 24px;
-    color: #b1ef78;
-    font-family: monospace;
-    font-size: 13px;
-    line-height: 2;
-}
-
-.disclaimer-category li {
-    padding-left: 5px;
-    margin-bottom: 5px;
-}
-
-.disclaimer-category li::marker {
-    color: #a28d5c;
-}
-
-.disclaimer-legal {
-    margin-top: 30px;
-    padding: 18px;
-    border: 1px solid rgba(182, 91, 69, 0.45);
-    background: rgba(182, 91, 69, 0.07);
-}
-
-.disclaimer-legal p {
-    color: #c58c78;
-    font-family: monospace;
-    font-size: 12px;
-    line-height: 1.9;
-    text-align: center;
-}
-
-.disclaimer-confirmation {
-    margin: 25px 0;
-    color: #8c987b;
-    font-size: 10px;
-    letter-spacing: 1.5px;
-    text-align: center;
-}
-
-
-/* =========================================================
-   32. CREDITS SCREEN
+/* Make sure the button inside this row doesn't keep its default top margin */
+.disclaimer-header-row .primary-button {
+    margin-top: 0;
+    min-width: 160px;
+}/* =========================================================
+   31. DISCLAIMER SCREEN
    ========================================================= */
 
-.credits-content {
-    width: min(760px, 100%);
+.disclaimer-content {
+    width: min(850px, 100%);
     margin: 0 auto;
-    padding: 45px 30px;
+    padding: 20px 15px;
+    overflow-y: auto;
 }
 
-.credits-content h2 {
-    margin: 20px 0;
+/* Create a flex row wrapper for the heading and the proceed button */
+.disclaimer-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin: 12px 0;
+}
+
+.disclaimer-content > .disclaimer-header-row > h2 {
+    margin: 0;
     color: #d1ff9b;
     font-family: Georgia, serif;
-    font-size: clamp(30px, 4vw, 46px);
+    font-size: clamp(24px, 3.5vw, 38px); /* Slightly adjusted to fit side-by-side */
+    font-weight: 900;
     letter-spacing: 4px;
+    text-shadow: 0 0 16px rgba(177, 239, 120, 0.18);
 }
 
-.credits-terminal-label {
-    margin: 25px 0 15px;
-    color: #a28d5c;
-    font-family: monospace;
-    font-size: 12px;
-}
-
-.credits-output {
-    min-height: 230px;
-    margin: 0;
-    color: #b1ef78;
-    font-family: monospace;
-    font-size: 14px;
-    line-height: 2;
-    white-space: pre-wrap;
-    overflow-wrap: anywhere;
-}
-
-.credits-countdown {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 35px;
-    color: #8c987b;
-    font-family: monospace;
-    font-size: 11px;
-    letter-spacing: 1px;
-}
-
-.credits-countdown strong {
-    color: #d1ff9b;
-    font-size: 25px;
-    min-width: 28px;
-    text-align: center;
-    text-shadow: 0 0 12px rgba(177, 239, 120, 0.3);
-}
-
-.credits-progress-track {
-    width: 100%;
-    height: 3px;
-    margin-top: 16px;
-    background: rgba(177, 239, 120, 0.12);
-    overflow: hidden;
-}
-
-.credits-progress-fill {
-    width: 0%;
-    height: 100%;
-    background: #b1ef78;
-    transition: width 1s linear;
-}
-
-
-/* =========================================================
-   33. RESPONSIVE ADJUSTMENTS
-   ========================================================= */
-
-@media (max-width: 760px) {
-    .disclaimer-content,
-    .credits-content {
-        padding: 25px 18px;
-    }
-
-    .disclaimer-category ul {
-        font-size: 11px;
-    }
-
-    .credits-output {
-        font-size: 12px;
-    }
-}
-
-@media (max-width: 420px) {
-    .disclaimer-content > h2 {
-        letter-spacing: 2px;
-    }
-
-    .disclaimer-category h3 {
-        font-size: 11px;
-    }
-
-    .disclaimer-legal p {
-        font-size: 10px;
-    }
-
-    .credits-countdown {
-        gap: 6px;
-        font-size: 9px;
-    }
+/* Make sure the button inside this row doesn't keep its default top margin */
+.disclaimer-header-row .primary-button {
+    margin-top: 0;
+    min-width: 160px;
 }
